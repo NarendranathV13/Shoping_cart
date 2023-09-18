@@ -9,8 +9,6 @@ const Cart = () => {
     const cartItems = useSelector((state) => state.cart.cartItems);
     const [showToast, setShowToast] = useState(false); // state for toast
     const dispatch = useDispatch();
-
-    
     const handleRemoveItem = (index) => {
         const updatedCart = [...cartItems];
         const itemToRemove = updatedCart[index];
@@ -44,8 +42,7 @@ const Cart = () => {
             quantity: Math.max((updatedCart[index].quantity || 1) + amount, 1)
         };
         updatedCart[index] = updatedItem;
-    
-        dispatch(updateQuantity({ prd_id: updatedItem.prd_id, quantity: updatedItem.quantity }));
+        dispatch(updateQuantity({ prd_id: updatedItem.prd_id, quantity: updatedItem.quantity }));// updating the quantity
         localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update local storage
     };
     
