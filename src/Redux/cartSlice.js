@@ -27,11 +27,22 @@ export const cartSlice = createSlice({
     addOrder: (state, action) => {
       const order = action.payload;
       state.orders.push(order);
-      state.cartCount = 0;
+      state.cartCount = 0;//empty cart count
+      state.cartItems=[];// empty cart array
       localStorage.setItem('orders', JSON.stringify(state.orders));
+    },
+
+ updateQuantity: (state, action) => {
+      const { prd_id, quantity } = action.payload;
+      const itemToUpdate = state.cartItems.find(item => item.prd_id === prd_id);
+
+      if (itemToUpdate) {
+        itemToUpdate.quantity = quantity;
+        localStorage.setItem('cart', JSON.stringify(state.cartItems)); // Update local storage
+      }
     },
   },
 });
 
-export const { addToCart, incrementCart, addOrder,removeFromCart } = cartSlice.actions;
+export const { addToCart, incrementCart, addOrder,removeFromCart,updateQuantity } = cartSlice.actions;
 export default cartSlice.reducer;

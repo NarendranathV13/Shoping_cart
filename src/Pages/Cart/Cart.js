@@ -1,39 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Customtoast from "../../Components/Customtoast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "../../Redux/cartSlice";
 import Button from "../../Components/Button";
 import "../Cart/style.css"
-import { addOrder } from "../../Redux/cartSlice";
+import { addOrder,updateQuantity } from "../../Redux/cartSlice";
 const Cart = () => {
-    const [cartItems, setCartItems] = useState([]);
+    const cartItems = useSelector((state) => state.cart.cartItems);
     const [showToast, setShowToast] = useState(false); // state for toast
     const dispatch = useDispatch();
-    useEffect(() => {
-        const storedCart = JSON.parse(localStorage.getItem('cart'));
-        if (storedCart) {
-            setCartItems(storedCart);
-        }
-    }, []);
 
-    const handleQuantityChange = (index, newQuantity) => {
-        const updatedCart = [...cartItems];
-        if (newQuantity < 1) {
-            newQuantity = 1; // Ensure quantity doesn't go below 1
-        }
-        updatedCart[index].quantity = newQuantity;
-        setCartItems(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
-    };
-    const handleToastClose = () => {
-        setShowToast(false);
-    }
-
+    
     const handleRemoveItem = (index) => {
         const updatedCart = [...cartItems];
         const itemToRemove = updatedCart[index];
         updatedCart.splice(index, 1); // Remove item from the array
-        setCartItems(updatedCart); // Update state
         dispatch(removeFromCart(itemToRemove)); // Dispatch action to update Redux store
         localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update local storage
         setShowToast(true);
@@ -52,11 +33,20 @@ const Cart = () => {
         cartItems.forEach(item => {
             dispatch(addOrder(item)); // Dispatch addOrder action for each item
         });
-
-        // Clear the cart after placing the order
-        setCartItems([]);
         localStorage.removeItem('cart');
         setShowToast(true); // Show toast indicating successful order placement
+    };
+
+    const handleQuantityChange = (index, amount) => {
+        const updatedCart = [...cartItems];
+        const updatedItem = {
+            ...updatedCart[index],
+            quantity: Math.max((updatedCart[index].quantity || 1) + amount, 1)
+        };
+        updatedCart[index] = updatedItem;
+    
+        dispatch(updateQuantity({ prd_id: updatedItem.prd_id, quantity: updatedItem.quantity }));
+        localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update local storage
     };
     
     return (
@@ -81,23 +71,25 @@ const Cart = () => {
                                     <td className="text-center" >
                                         <div className="input-group">
                                             <button
-                                                className="btn btn-outline-secondary"
+                                                className="btn btn-outline-secondary sub"
                                                 type="button"
-                                                onClick={() => handleQuantityChange(index, item.quantity - 1)}
+                                                onClick={() => handleQuantityChange(index, -1)}
+                                               
                                             >
                                                 -
                                             </button>
                                             <input
                                                 type="number"
-                                                className="form-control"
-                                                value={item.quantity || parseInt(1)}
-                                                onChange={(e) => handleQuantityChange(index, parseInt(e.target.value) || parseInt(1))}
+                                                className="form-control quantVal"
+                                                value={item.quantity || 1}
+                                                
                                             />
 
                                             <button
-                                                className="btn btn-outline-secondary"
+                                                className="btn btn-outline-secondary add"
                                                 type="button"
-                                                onClick={() => handleQuantityChange(index, parseInt(item.quantity + 1))}
+                                                onClick={() => handleQuantityChange(index, 1)}
+            
                                             >
                                                 +
                                             </button>
@@ -135,7 +127,6 @@ const Cart = () => {
                     show={showToast}
                     message="Product is removed"
                     color="danger"
-                    onClose={handleToastClose}
                 />
             )}
         </div>
