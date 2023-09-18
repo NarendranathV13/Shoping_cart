@@ -7,7 +7,7 @@ import ProtectedRouter from "./Protectedrouter";
 import Dashboard from "../Pages/Dashboard";
 import Products from "../Pages/Products/Products";
 import Myorders from "../Pages/Myorders";
-import Cart from "../Pages/Cart";
+import Cart from "../Pages/Cart/Cart";
 
 const Router = ({auth}) =>{
     const [isAuth, setAuth] = useState(localStorage.getItem("isAuth"))

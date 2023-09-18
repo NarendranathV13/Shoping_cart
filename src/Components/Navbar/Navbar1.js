@@ -1,13 +1,10 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { incrementCart } from '../../Redux/cartSlice';
-import { addToCart } from '../../Redux/cartSlice';
 import '../Navbar/style.css'
 
 const Navbar1 = ({ auth }) => {
     const cartItems = useSelector((state) => state.cart.cartItems);
-    const dispatch = useDispatch();  
     const savedData = JSON.parse(localStorage.getItem("formData"));
     const Username = savedData.username;
     const navigate = useNavigate();
@@ -17,26 +14,10 @@ const Navbar1 = ({ auth }) => {
         navigate("/Login");
         auth("false")
     };
-    const handleSignup = () => {
-        localStorage.setItem("isAuth", "false");
-        console.log(savedData.username)
-        navigate("/Register");
-        auth("false")
-    }
-    const handleAddToCart = (product) => {
-        dispatch(addToCart(product));
-        dispatch(incrementCart());
-      };
     return (
         <>
             {/* Navbar starts */}
-            <nav className="navbar navbar-expand bg-dark navbar-dark sticky-top px-4 py-0">
-                <a href="" className="navbar-brand d-flex d-lg-none me-4">
-                    <h2 className="text-primary mb-0"><i className="fa fa-user-edit"></i></h2>
-                </a>
-                <form className="d-none d-md-flex ms-4">
-                    <input className="form-control bg-dark border-0" type="search" placeholder="Search" />
-                </form>
+            <nav className="navbar navbar-expand navBg sticky-top px-4 py-0" style={{ backgroundColor: "rgba(20, 24, 24, 0) !important" }}>
                 <div className="navbar-nav align-items-center ms-auto">
                     <div className="nav-item">
                         <NavLink to="/Products" className="nav-item mx-2 nav-link ">
@@ -55,13 +36,18 @@ const Navbar1 = ({ auth }) => {
                         </div>
                     </div>
                     <div className="nav-item dropdown">
+                        <NavLink to="/Myorders" className="nav-item m-0 nav-link ">
+                        <i class="fa-solid fa-gift me-2 mx-3"></i>My orders
+                        </NavLink>
+                        <div className="dropdown-menu dropdown-menu-end bg-dark border-0 rounded-0 rounded-bottom m-0">
+                            {/* Notification items */}
+                        </div>
+                    </div>
+                    <div className="nav-item dropdown">
                         <a href="" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <span className="d-none d-lg-inline-flex">{Username}</span>
                         </a>
                         <div className="dropdown-menu dropdown-menu-end bg-dark border-0 rounded-0 rounded-bottom m-0">
-                        <NavLink to="/Myorders" className="dropdown-item">
-                            Myorders
-                        </NavLink>
                             <a href="" className="dropdown-item">Settings</a>
                             <button className="dropdown-item " onClick={handleLogout}>
                                 <i class="fa-solid fa-arrow-right-to-bracket "></i>
@@ -107,15 +93,6 @@ const Navbar1 = ({ auth }) => {
                         <NavLink to="/Myorders" className="nav-item m-0 nav-link ">
                             <i class="fa-solid fa-gift me-2"></i>Myorders
                         </NavLink>
-                        <div className="nav-item dropdown m-0">
-                            <a href="" className="nav-link m-0 dropdown-toggle" data-bs-toggle="dropdown"><i className="far fa-file-alt me-2"></i>Pages</a>
-                            <div className="dropdown-menu bg-transparent border-0">
-                                <a href="" className="dropdown-item">Sign In</a>
-                                <button className="dropdown-item " onClick={handleSignup}>
-                                    Sign up
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </nav>
             </div>

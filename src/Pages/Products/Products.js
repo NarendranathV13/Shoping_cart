@@ -6,9 +6,11 @@ import ProductNav from "../../Components/ProductComponents/ProductNav";
 import "../Products/style.css"
 import Spinner from "../../Components/Spinner";
 import Button from "../../Components/Button";
-import { Modal, Button as BootstrapButton } from 'react-bootstrap';
 import Customtoast from "../../Components/Customtoast.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ProductModal from "../../Components/ProductComponents/ProductModal";
+
+
 const Products = () => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.cartItems);
@@ -18,6 +20,9 @@ const Products = () => {
     const [showToast, setShowToast] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [toastMessage, setToastMessage] = useState('');
+const [toastColor, setToastColor] = useState('');
+
     useEffect(() => {
         axios.get('https://64db5089593f57e435b0c522.mockapi.io/products')
             .then(response => {
@@ -51,23 +56,25 @@ const Products = () => {
             setFilteredProducts(filtered);
         }
     };
+    const handleShowToast = (show, color, message) => {
+        setShowToast(show);
+        setToastColor(color);
+        setToastMessage(message);
+    };
     const handleToastClose = () => {
         setShowToast(false);
     };
     const handleAddToCart = (product) => {
         dispatch(addToCart(product));
-        setShowToast(true);
+        handleShowToast(true, 'warning','Product is added to cart');
     };
     const handleOpenModal = (product) => {
         setSelectedProduct(product);
         setShowModal(true);
     };
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
     const handleBuyNow = (product) => {
         dispatch(addOrder(product));
-        setShowToast(true);
+        handleShowToast(true, 'success', 'Order placed successfully'); // Updated line
     };
 
     return (
@@ -81,9 +88,9 @@ const Products = () => {
                 {/* Spinner */}
                 {loading && <Spinner />}
                 {filteredProducts.map((product) => (
-                    <div className="col-lg-4" key={product.id}>
+                    <div className="col-lg-4 " key={product.id}>
                         <div
-                            className="card  mt-2 mb-2 shadow-lg rounded-5 custom-card"
+                            className="card  mt-2 mb-2 mx-5 shadow-lg rounded-5 custom-card"
                             style={{ width: "20rem" }}
                         >
                             <img
@@ -91,6 +98,7 @@ const Products = () => {
                                 className="card-img-top rounded-5"
                                 alt="..."
                                 onClick={() => handleOpenModal(product)}
+                                data-bs-toggle="modal" data-bs-target="#productModal"
                             />
 
                             <div className="card-body">
@@ -135,25 +143,13 @@ const Products = () => {
                 ))}
             </div>
             {/* modal for product display */}
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedProduct && selectedProduct.product_name}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {selectedProduct && (
-                        <>
-                            <img src={selectedProduct.image_url} className="img-fluid mb-3" alt="Product" />
-                            <p><strong>Price:</strong> {selectedProduct.product_price_inr}</p>
-                            <p><strong>Description:</strong> {selectedProduct.description}</p>
-                        </>
-                    )}
-                </Modal.Body>
-            </Modal>
+                    <ProductModal   selectedProduct={selectedProduct}
+                showModal={showModal} />
             {showToast && (
                 <Customtoast
                     show={showToast}
-                    message="Product added to cart"
-                    color="success"
+                    message={toastMessage}
+                    color={toastColor}
                     onClose={handleToastClose}
                 />
             )}
