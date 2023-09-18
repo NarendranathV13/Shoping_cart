@@ -5,6 +5,7 @@ import '../Navbar/style.css'
 
 const Navbar1 = ({ auth }) => {
     const cartItems = useSelector((state) => state.cart.cartItems);
+    const cartCount = useSelector((state) => state.cart.cartCount);
     const savedData = JSON.parse(localStorage.getItem("formData"));
     const Username = savedData.username;
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Navbar1 = ({ auth }) => {
                     </div>
                     <div className="nav-item dropdown">
                         <NavLink to="/Cart" className="nav-item m-0 nav-link ">
-                            <i class="fa-solid fa-cart-shopping me-3  mx-2"> <p className=' mx-1 cartNum text-danger d-flex'>{cartItems.length}</p></i>Cart 
+                            <i class="fa-solid fa-cart-shopping me-3  mx-2"> <p className=' mx-1 cartNum text-danger d-flex'>{cartCount}</p></i>Cart 
                         </NavLink>
                         <div className="dropdown-menu dropdown-menu-end bg-dark border-0 rounded-0 rounded-bottom m-0">
                             {/* Notification items */}
@@ -86,7 +87,7 @@ const Navbar1 = ({ auth }) => {
                             <i class="fa-solid fa-store me-2"></i>Products
                         </NavLink>
                         <NavLink to="/Cart" className="nav-item m-0 nav-link ">
-                            <i class="fa-solid fa-cart-shopping me-2"></i>Cart <span className=' text-danger text-bg-info mx-2 rounded-circle p-2 h6 mx-3'>{cartItems.length}</span>
+                            <i class="fa-solid fa-cart-shopping me-2"></i>Cart <span className=' text-danger text-bg-info mx-2 rounded-circle p-2 h6 mx-3'>{cartCount}</span>
                         
                         </NavLink>
 

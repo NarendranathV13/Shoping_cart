@@ -20,12 +20,14 @@ export const cartSlice = createSlice({
     removeFromCart: (state, action) => {
       const itemToRemove = action.payload;
       state.cartItems = state.cartItems.filter(item => item.prd_id !== itemToRemove.prd_id);
+      state.cartCount -=1;
       localStorage.setItem('cart', JSON.stringify(state.cartItems)); // Update local storage
     },
     
     addOrder: (state, action) => {
       const order = action.payload;
       state.orders.push(order);
+      state.cartCount = 0;
       localStorage.setItem('orders', JSON.stringify(state.orders));
     },
   },

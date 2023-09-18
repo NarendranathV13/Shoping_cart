@@ -4,8 +4,7 @@ import { useDispatch } from "react-redux";
 import { removeFromCart } from "../../Redux/cartSlice";
 import Button from "../../Components/Button";
 import "../Cart/style.css"
-
-
+import { addOrder } from "../../Redux/cartSlice";
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [showToast, setShowToast] = useState(false); // state for toast
@@ -48,6 +47,16 @@ const Cart = () => {
     }
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.product_price_inr * (parseInt(item.quantity) || 1), 0);
+    };
+    const handlePlaceOrder = () => {
+        cartItems.forEach(item => {
+            dispatch(addOrder(item)); // Dispatch addOrder action for each item
+        });
+
+        // Clear the cart after placing the order
+        setCartItems([]);
+        localStorage.removeItem('cart');
+        setShowToast(true); // Show toast indicating successful order placement
     };
     
     return (
@@ -116,7 +125,7 @@ const Cart = () => {
                     </div>
                     <div className="col-lg-8 d-flex justify-content-end">
                         <Button text="Cancel" color="danger" onClick={() => console.log("Cancel clicked")} />
-                        <Button text="Place Order" color="success" onClick={() => console.log("Place Order clicked")} />
+                        <Button text="Place Order" color="success" onClick={handlePlaceOrder} />
                     </div>
                 </div>
             </div>
