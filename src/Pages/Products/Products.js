@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addToCart, addOrder } from "../../Redux/cartSlice";
+import { addToCart, addBuyNow } from "../../Redux/cartSlice";
 import axios from "axios";
 import { useSelector, useDispatch } from 'react-redux';
 import ProductNav from "../../Components/ProductComponents/ProductNav";
@@ -73,7 +73,7 @@ const [toastColor, setToastColor] = useState('');
         setShowModal(true);
     };
     const handleBuyNow = (product) => {
-        dispatch(addOrder(product));
+        dispatch(addBuyNow(product));
         handleShowToast(true, 'success', 'Order placed successfully'); // Updated line
     };
 
