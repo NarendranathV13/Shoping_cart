@@ -1,0 +1,340 @@
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+const Register = () => {
+    //yup library validation 
+    const validationSchema = Yup.object().shape({
+        username: Yup.string().required(' Name is required'),
+        email: Yup.string().email('Invalid email').required('Email is required'),
+        pin: Yup.string()
+            .matches(/^\d{5,6}$/, 'Pin code must be 5 to 6 digits')
+            .required('Pin code is required'),
+    });
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            email: '',
+            pin: '',
+            password: '',
+            cnfpassword: ''
+        },
+        validationSchema: validationSchema,// yup library 
+        onSubmit: (values, { resetForm }) => {
+            // Get the current counter value from local storage
+            let counter = parseInt(localStorage.getItem('counter')) || 0;
+            counter++;
+            // Update the counter value in local storage
+            localStorage.setItem('counter', counter.toString());
+            const uniqueId = counter.toString();
+            // Store the data in local storage with the unique ID
+            localStorage.setItem(uniqueId, JSON.stringify(values));
+            // Reset the form fields 
+            resetForm();
+            alert('Form submitted successfully!');
+        }
+    });
+    return (
+        <div>
+            <form id="form" className="form" name="form" onSubmit={formik.handleSubmit}>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <div className="top">
+                                <h3 id="heading">Registration Form</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mid">
+                        <div className="row">
+                            <div className="col-lg-6">
+                                <div className="form-val text-start ">
+                                    <label htmlFor="username">Name</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="username"
+                                        name="username"
+                                        placeholder="Enter your name"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.username}
+                                    />
+                                    {formik.touched.username && formik.errors.username ? (
+                                        <div class="text-start text-danger">{formik.errors.username}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+                            <div className="col-lg-6">
+                                <div className="form-val text-start">
+                                    <label htmlFor="Lname">Email</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="Enter your Email"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.email}
+                                    />
+                                    {formik.touched.email && formik.errors.email ? (
+                                        <div class="text-start text-danger">{formik.errors.email}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-6">
+                                <div className="form-val text-start">
+                                    <label htmlFor="phone">Password</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Password"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.password}
+                                    />
+                                    {formik.touched.password && formik.errors.password ? (
+                                        <div class="text-start text-danger">{formik.errors.password}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+                            <div className="col-lg-6">
+                                <div className="form-val text-start">
+                                    <label htmlFor="cnfPassword">Confirm password</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="password"
+                                        id="cnfpassword"
+                                        name="cnfpassword"
+                                        placeholder="Confirm Password"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.cnfpassword}
+                                    />
+                                    {formik.touched.cnfpassword && formik.errors.cnfpassword ? (
+                                        <div class="text-start text-danger">{formik.errors.cnfpassword}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                        <div className="col-lg-6">
+                                <div className="form-val text-start">
+                                    <label htmlFor="pin">Pin code</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="pin"
+                                        name="pin"
+                                        placeholder="Enter the Pincode"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.pin}
+                                    />
+                                    {formik.touched.pin && formik.errors.pin ? (
+                                        <div class="text-start text-danger">{formik.errors.pin}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+                            <div className="col-lg-6">
+                                <div className="form-val text-start">
+                                    <label htmlFor="pin">Language</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="pin"
+                                        name="pin"
+                                        placeholder="Enter the Pincode"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.language}
+                                    />
+                                    {formik.touched.language && formik.errors.language ? (
+                                        <div class="text-start text-danger">{formik.errors.language}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+                        </div>
+                        {/* <div className="row">
+                            <div className="col-lg-4">
+                                <div className="form-val text-start">
+                                    <label htmlFor="card_name">Name on the Card</label><br />
+                                    <input
+                                        type="text"
+                                        id="card_name"
+                                        name="card_name"
+                                        placeholder="Enter the Name"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.card_name}
+                                    />
+                                    {formik.touched.card_name && formik.errors.card_name ? (
+                                        <div class="text-start text-danger">{formik.errors.card_name}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            <div className="col-lg-4">
+                                <div className="form-val text-start">
+                                    <label htmlFor="card_no">Card Number</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="card_no"
+                                        name="card_no"
+                                        placeholder="1234-5678-9012-3456"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.card_no}
+                                    />
+                                    {formik.touched.card_no && formik.errors.card_no ? (
+                                        <div class="text-start text-danger">{formik.errors.card_no}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            <div className="col-lg-4">
+                                <div className="form-val text-start">
+                                    <label htmlFor="cvv">CVV number</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="cvv"
+                                        name="cvv"
+                                        placeholder="EX: 123"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.cvv}
+                                    />
+                                    {formik.touched.cvv && formik.errors.cvv ? (
+                                        <div class="text-start text-danger">{formik.errors.cvv}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-6">
+                                <div className="form-val text-start">
+                                    <label htmlFor="address1">Address Line-1</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="address1"
+                                        name="address1"
+                                        placeholder="Enter your address"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.address1}
+                                    />
+                                    {formik.touched.address1 && formik.errors.address1 ? (
+                                        <div class="text-start text-danger">{formik.errors.address1}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            <div className="col-lg-6">
+                                <div className="form-val text-start">
+                                    <label htmlFor="address2">Address Line-2</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="address2"
+                                        name="address2"
+                                        placeholder="Enter your address"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.address2}
+                                    />
+                                    {formik.touched.address2 && formik.errors.address2 ? (
+                                        <div class="text-start text-danger">{formik.errors.address2}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-4">
+                                <div className="form-val text-start">
+                                    <label htmlFor="city">City Name</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="city"
+                                        name="city"
+                                        placeholder="Enter your city"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.city}
+                                    />
+                                    {formik.touched.city && formik.errors.city ? (
+                                        <div class="text-start text-danger">{formik.errors.city}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            <div className="col-lg-4">
+                                <div className="form-val text-start">
+                                    <label htmlFor="state">State Name</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="state"
+                                        name="state"
+                                        placeholder="Enter your State"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.state}
+                                    />
+                                    {formik.touched.state && formik.errors.state ? (
+                                        <div class="text-start text-danger">{formik.errors.state}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            <div className="col-lg-4">
+                                <div className="form-val text-start">
+                                    <label htmlFor="pin">Pin code</label><br />
+                                    <input
+                                        class="w-100"
+                                        type="text"
+                                        id="pin"
+                                        name="pin"
+                                        placeholder="Enter the Pincode"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.pin}
+                                    />
+                                    {formik.touched.pin && formik.errors.pin ? (
+                                        <div class="text-start text-danger">{formik.errors.pin}</div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                        </div> */}
+
+                        <div className="row">
+                            <div className="col-12">
+                                <div className="bt">
+                                    <button
+                                        className="btn btn-success mt-2"
+                                        id="submitbtn"
+                                        type="submit"
+                                    >
+                                        Register
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+export default Register;
