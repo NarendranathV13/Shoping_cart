@@ -33,9 +33,8 @@ const Cart = () => {
         cartItems.forEach(item => {
             dispatch(addOrder(item)); // Dispatch addOrder action for each item
         });
-        console.log("placed")
+        localStorage.removeItem('cart');
         handleShowToast(true, 'warning','Order placed successfully');
-        console.log("placed",showToast)
     };
 
     const handleQuantityChange = (index, amount) => {
