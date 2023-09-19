@@ -1,5 +1,5 @@
-import React,{useState, useEffect} from "react";
-import { useSelector} from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { LoginContainer } from "../StyledComponent/LoginStyle";
 import BarChart from "../Components/BarChart";
 
@@ -41,11 +41,10 @@ const Dashboard = () => { // Receive cartItems from Redux state
                     <h2 className=" text-center mt-5 ">Chart</h2>
                     <div className=" row">
                         <div className=" col-lg-12 ">
-                        <BarChart  products={10}
-                cart={cartCount}
-                orders={orderCount}
-              />
-                      {/* chart is here */}
+                            <BarChart products={10}
+                                cart={cartCount}
+                                orders={orderCount}
+                            />
                         </div>
                     </div>
                 </div>
