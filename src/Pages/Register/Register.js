@@ -6,6 +6,7 @@ import '../Register/style.css'
 import Country from '../../Api/Country';
 import Cities from '../../Api/Cities';
 import States from '../../Api/States';
+import Swal from 'sweetalert2'; // Import SweetAlert
 import { Link, useNavigate } from 'react-router-dom';
 import { Heading, LoginContainer } from '../../StyledComponent/LoginStyle';
 const Register = () => {
@@ -88,7 +89,12 @@ const Register = () => {
             setSelectedState('');
             resetForm();
             navigate("/Login");
-            alert('Form submitted successfully!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Form submitted successfully!',
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     });
     return (

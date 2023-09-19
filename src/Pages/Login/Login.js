@@ -2,6 +2,8 @@ import React,{useEffect} from "react";
 import { useFormik } from "formik";
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
+import Swal from 'sweetalert2'; // Import SweetAlert
+
 import { Contain, LoginButton, InputField, Heading, LoginContainer, WelcomeText } from "../../StyledComponent/LoginStyle"; // Update the import path
 const Login = ({auth}) => {
     const isAuth = localStorage.getItem("isAuth");
@@ -25,12 +27,20 @@ const Login = ({auth}) => {
             // Retrieve data from local storage
             const savedData = JSON.parse(localStorage.getItem("formData"));
             if (savedData && savedData.email === values.email && savedData.password === values.password) {
-                alert("Logged in successfully!");
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Logged in successfully!',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
                 localStorage.setItem("isAuth", "true");
-                navigate("/")
-                auth("true");//changing the state of router for navbar visibility
+                navigate("/");
+                auth("true"); //changing the state of router for navbar visibility
             } else {
-                alert("Invalid email or password");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid email or password',
+                });
                 auth("false");
             }
         },

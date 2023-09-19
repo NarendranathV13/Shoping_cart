@@ -3,6 +3,7 @@ import Customtoast from "../../Components/Customtoast";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "../../Redux/cartSlice";
 import Button from "../../Components/Button";
+import Swal from 'sweetalert2'; // Import SweetAlert
 import "../Cart/style.css"
 import { addOrder,updateQuantity } from "../../Redux/cartSlice";
 const Cart = () => {
@@ -34,7 +35,12 @@ const Cart = () => {
             dispatch(addOrder(item)); // Dispatch addOrder action for each item
         });
         localStorage.removeItem('cart');
-        handleShowToast(true, 'warning','Order placed successfully');
+        Swal.fire({
+            icon: 'success',
+            title: 'Order placed successfully!',
+            timer: 2000,
+            showConfirmButton: true
+        });
     };
 
     const handleQuantityChange = (index, amount) => {
