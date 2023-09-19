@@ -8,6 +8,8 @@ import { addOrder,updateQuantity } from "../../Redux/cartSlice";
 const Cart = () => {
     const cartItems = useSelector((state) => state.cart.cartItems);
     const [showToast, setShowToast] = useState(false); // state for toast
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastColor, setToastColor] = useState('');
     const dispatch = useDispatch();
     const handleRemoveItem = (index) => {
         const updatedCart = [...cartItems];
@@ -15,7 +17,7 @@ const Cart = () => {
         updatedCart.splice(index, 1); // Remove item from the array
         dispatch(removeFromCart(itemToRemove)); // Dispatch action to update Redux store
         localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update local storage
-        setShowToast(true);
+        handleShowToast(true, 'danger','Product is removed');
     };
     if (cartItems.length === 0) {
         return (
@@ -31,8 +33,9 @@ const Cart = () => {
         cartItems.forEach(item => {
             dispatch(addOrder(item)); // Dispatch addOrder action for each item
         });
-        localStorage.removeItem('cart');
-        setShowToast(true); // Show toast indicating successful order placement
+        console.log("placed")
+        handleShowToast(true, 'warning','Order placed successfully');
+        console.log("placed",showToast)
     };
 
     const handleQuantityChange = (index, amount) => {
@@ -45,7 +48,15 @@ const Cart = () => {
         dispatch(updateQuantity({ prd_id: updatedItem.prd_id, quantity: updatedItem.quantity }));// updating the quantity
         localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update local storage
     };
-    
+        const handleShowToast = (show, color, message) => {
+        setShowToast(show);
+        setToastColor(color);
+        setToastMessage(message);
+    };
+    const handleToastClose = () => {
+        setShowToast(false);
+    };
+
     return (
         <div className="container">
             <div className="row">
@@ -118,12 +129,12 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
-
             {showToast && (
                 <Customtoast
                     show={showToast}
-                    message="Product is removed"
-                    color="danger"
+                    message={toastMessage}
+                    color={toastColor}
+                    onClose={handleToastClose}
                 />
             )}
         </div>

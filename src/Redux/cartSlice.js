@@ -17,12 +17,14 @@ export const cartSlice = createSlice({
         localStorage.setItem('cart', JSON.stringify(state.cartItems));
       }
     },
+    //remove product from cart
     removeFromCart: (state, action) => {
       const itemToRemove = action.payload;
       state.cartItems = state.cartItems.filter(item => item.prd_id !== itemToRemove.prd_id);
-      state.cartCount -= 1;
+      state.cartCount -= 1; // reduce cart count
       localStorage.setItem('cart', JSON.stringify(state.cartItems)); // Update local storage
     },
+    //Place order from cart page
     addOrder: (state, action) => {
       const order = action.payload;
       state.orders.push(order);
@@ -30,12 +32,13 @@ export const cartSlice = createSlice({
       state.cartItems = [];// empty cart array
       localStorage.setItem('orders', JSON.stringify(state.orders));
     },
+    //place order from products page
     addBuyNow: (state, action) => {
       const order = action.payload;
       state.orders.push(order);
       localStorage.setItem('orders', JSON.stringify(state.orders));
     },
-// to update the quantity
+// to update the quantity of product in local
     updateQuantity: (state, action) => {
       const { prd_id, quantity } = action.payload;
       const itemToUpdate = state.cartItems.find(item => item.prd_id === prd_id);

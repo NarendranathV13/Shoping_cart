@@ -1,10 +1,9 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector} from 'react-redux';
 import '../Navbar/style.css'
 
 const Navbar1 = ({ auth }) => {
-    const cartItems = useSelector((state) => state.cart.cartItems);
     const cartCount = useSelector((state) => state.cart.cartCount);
     const savedData = JSON.parse(localStorage.getItem("formData"));
     const Username = savedData.username;
@@ -24,16 +23,12 @@ const Navbar1 = ({ auth }) => {
                         <NavLink to="/Products" className="nav-item mx-2 nav-link ">
                             <i class="fa-solid fa-store me-2"></i>Products
                         </NavLink>
-                        <div className="dropdown-menu dropdown-menu-end bg-dark border-0 rounded-0 rounded-bottom m-0">
-                            {/* Message items */}
-                        </div>
                     </div>
                     <div className="nav-item dropdown">
                         <NavLink to="/Cart" className="nav-item m-0 nav-link ">
                             <i class="fa-solid fa-cart-shopping me-3  mx-2"> <p className=' mx-1 cartNum text-danger d-flex'>{cartCount}</p></i>Cart 
                         </NavLink>
                         <div className="dropdown-menu dropdown-menu-end bg-dark border-0 rounded-0 rounded-bottom m-0">
-                            {/* Notification items */}
                         </div>
                     </div>
                     <div className="nav-item dropdown">
@@ -41,7 +36,6 @@ const Navbar1 = ({ auth }) => {
                         <i class="fa-solid fa-gift me-2 mx-3"></i>My orders
                         </NavLink>
                         <div className="dropdown-menu dropdown-menu-end bg-dark border-0 rounded-0 rounded-bottom m-0">
-                            {/* Notification items */}
                         </div>
                     </div>
                     <div className="nav-item dropdown">
@@ -76,7 +70,6 @@ const Navbar1 = ({ auth }) => {
                         <div className="ms-3 text-light ">
                         <span>Welcome</span>
                             <h5 className="text-light mb-0">{Username}</h5>
-                            
                         </div>
                     </div>
                     <div className="navbar-nav m-0 w-100">
@@ -90,7 +83,6 @@ const Navbar1 = ({ auth }) => {
                             <i class="fa-solid fa-cart-shopping me-2"></i>Cart <span className=' text-danger text-bg-info mx-2 rounded-circle p-2 h6 mx-3'>{cartCount}</span>
                         
                         </NavLink>
-
                         <NavLink to="/Myorders" className="nav-item m-0 nav-link ">
                             <i class="fa-solid fa-gift me-2"></i>Myorders
                         </NavLink>

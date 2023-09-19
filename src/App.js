@@ -10,7 +10,7 @@ function App() {
        <BrowserRouter>
         <Router auth={setAuth}/>
       </BrowserRouter>
-      {/* <Demo2 /> */}
+      {/* <Demo2 />  add this comp and get the token and place in Api header */}
     </div>
   );
 }

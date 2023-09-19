@@ -21,7 +21,7 @@ const Products = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [toastMessage, setToastMessage] = useState('');
-const [toastColor, setToastColor] = useState('');
+    const [toastColor, setToastColor] = useState('');
 
     useEffect(() => {
         axios.get('https://64db5089593f57e435b0c522.mockapi.io/products')
