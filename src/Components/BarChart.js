@@ -21,7 +21,7 @@ const BarChart = ({ products, cart, orders }) => {
     labels: ['Products', 'Cart', 'My Orders'],
     datasets: [
       {
-        label: 'Dashboard',
+        label: 'Count',
         backgroundColor: ['blue', 'green', 'red'],
         borderColor: 'rgba(0,0,0,1)',
         borderWidth: 2,
