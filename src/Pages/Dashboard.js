@@ -1,11 +1,12 @@
 import React,{useState, useEffect} from "react";
-import { connect } from 'react-redux'; // Import connect
+import { useSelector} from 'react-redux';
 import { LoginContainer } from "../StyledComponent/LoginStyle";
-import Chartcomp from "../Components/Chartcomp"; // Update the import path
+import BarChart from "../Components/BarChart";
 
-const Dashboard = ({ cartItems }) => { // Receive cartItems from Redux state
-    const cartCount = cartItems.length; // Calculate the cart count
+
+const Dashboard = () => { // Receive cartItems from Redux state
     const [orderCount, setOrderCount] = useState(0);
+    const cartCount = useSelector((state) => state.cart.cartCount);
     useEffect(() => {
         // Retrieve orders from local storage
         const storedOrders = JSON.parse(localStorage.getItem('orders'));
@@ -40,7 +41,11 @@ const Dashboard = ({ cartItems }) => { // Receive cartItems from Redux state
                     <h2 className=" text-center mt-5 ">Chart</h2>
                     <div className=" row">
                         <div className=" col-lg-12 ">
-                        {/* <Chartcomp numProducts={numProducts} numCartItems={cartCount} /> */}
+                        <BarChart  products={10}
+                cart={cartCount}
+                orders={orderCount}
+              />
+                      {/* chart is here */}
                         </div>
                     </div>
                 </div>
@@ -48,9 +53,4 @@ const Dashboard = ({ cartItems }) => { // Receive cartItems from Redux state
         </div>
     )
 }
-const mapStateToProps = state => {
-    return {
-        cartItems: state.cart.cartItems // Assuming you have a cart reducer with cartItems
-    }
-}
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard

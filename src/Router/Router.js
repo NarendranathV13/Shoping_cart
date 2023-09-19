@@ -16,6 +16,7 @@ const Router = ({auth}) =>{
     }, [isAuth])
     return(
         <>
+        
         {isAuth == "true" ? <Navbar1 auth={setAuth} /> : null}
           <Routes>
                 <Route path="/Login" index element={<Login auth={setAuth} />} />
