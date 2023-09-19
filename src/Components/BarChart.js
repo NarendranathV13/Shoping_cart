@@ -22,9 +22,11 @@ const BarChart = ({ products, cart, orders }) => {
     datasets: [
       {
         label: 'Count',
-        backgroundColor: ['blue', 'green', 'red'],
+        backgroundColor: [ 'rgba(54, 162, 235, 0.6)',
+        'rgba(153, 102, 255, 0.7)',
+        'rgba(201, 203, 207, 0.8)'],
         borderColor: 'rgba(0,0,0,1)',
-        borderWidth: 2,
+        borderWidth: 1,
         data: [products, cart, orders],
       },
     ],

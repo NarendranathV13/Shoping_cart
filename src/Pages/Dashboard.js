@@ -38,7 +38,7 @@ const Dashboard = () => { // Receive cartItems from Redux state
                 <div className=" col-lg-12">
                     <h2 className=" text-center mt-5 ">Chart</h2>
                     <div className=" row">
-                        <div className=" col-lg-12 ">
+                        <div className=" col-lg-12 h-75 ">
                             <BarChart products={10}
                                 cart={cartCount}
                                 orders={orderCount}
