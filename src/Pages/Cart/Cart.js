@@ -38,7 +38,7 @@ const Cart = () => {
         Swal.fire({
             icon: 'success',
             title: 'Order placed successfully!',
-            timer: 2000,
+            timer: 3000,
             showConfirmButton: true
         });
     };
