@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { LoginContainer } from "../StyledComponent/LoginStyle";
-import BarChart from "../Components/BarChart";
+import BarChart from "../Components/BarChart"; // chart.js
+// import MyChart from "../Components/Chart/NewChart"; // react-chart tanstack
 const Dashboard = () => { // Receive cartItems from Redux state
     const [orderCount, setOrderCount] = useState(0);
     const cartCount = useSelector((state) => state.cart.cartCount);
@@ -43,6 +44,10 @@ const Dashboard = () => { // Receive cartItems from Redux state
                                 cart={cartCount}
                                 orders={orderCount}
                             />
+                             {/* <MyChart products={10}
+                                cart={cartCount}
+                                orders={orderCount}
+                            /> */}
                         </div>
                     </div>
                 </div>
