@@ -29,20 +29,13 @@ const BarChart = ({ products, cart, orders }) => {
       },
     ],
   };
-
   const options = {
  
-  
   };
-
   return (
     <div>
       <Bar data={data} options={options} />
     </div>
   );
 };
-
-
-
-
 export default BarChart;
