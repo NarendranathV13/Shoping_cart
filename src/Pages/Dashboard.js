@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { LoginContainer } from "../StyledComponent/LoginStyle";
 import BarChart from "../Components/BarChart";
-
-
 const Dashboard = () => { // Receive cartItems from Redux state
     const [orderCount, setOrderCount] = useState(0);
     const cartCount = useSelector((state) => state.cart.cartCount);
