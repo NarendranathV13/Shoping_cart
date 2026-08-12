@@ -13,11 +13,11 @@ const Router = ({auth}) =>{
     const [isAuth, setAuth] = useState(localStorage.getItem("isAuth"))
     useEffect(() => {
         auth(isAuth)
-    }, [isAuth])
+    }, [isAuth, auth])
     return(
         <>
         
-        {isAuth == "true" ? <Navbar1 auth={setAuth} /> : null}
+        {isAuth === "true" ? <Navbar1 auth={setAuth} /> : null}
           <Routes>
                 <Route path="/Login" index element={<Login auth={setAuth} />} />
                 <Route path="Register" element={<Register />} />
@@ -32,3 +32,4 @@ const Router = ({auth}) =>{
     )
 }
 export default Router
+

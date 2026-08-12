@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { addToCart, addBuyNow } from "../../Redux/cartSlice";
-import axios from "axios";
+import api from "../../ApiService";
 import { useSelector, useDispatch } from 'react-redux';
 import ProductNav from "../../Components/ProductComponents/ProductNav";
 import "../Products/style.css"
@@ -24,7 +24,7 @@ const Products = () => {
     const [toastColor, setToastColor] = useState('');
 
     useEffect(() => {
-        axios.get('https://64db5089593f57e435b0c522.mockapi.io/products')
+        api.get('https://64db5089593f57e435b0c522.mockapi.io/products')
             .then(response => {
                 setProducts(response.data);
                 setFilteredProducts(response.data);
@@ -93,15 +93,15 @@ const Products = () => {
                             className="card  mt-2 mb-2 mx-5 shadow-lg rounded-5 custom-card"
                             style={{ width: "20rem" }}
                         >
-                            <img
+                            {/* <img
                                 src={product.image_url}
                                 className="card-img-top rounded-5"
                                 alt="..."
                                 onClick={() => handleOpenModal(product)}
                                 data-bs-toggle="modal" data-bs-target="#productModal"
-                            />
+                            /> */}
 
-                            <div className="card-body">
+                            <div className="card-body mx-2 my-2">
                                 <div className="row productsCol">
                                     <div className="col">
                                         <h6 className="card-title">Name :</h6>

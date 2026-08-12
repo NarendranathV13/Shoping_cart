@@ -52,12 +52,12 @@ const Login = ({auth}) => {
         } else {
             navigate("/Login");
         }
-    }, [isAuth]);
+    }, [isAuth, navigate]);
     return (
         <Contain>
             <LoginContainer>
                 <Heading>Welcome</Heading>
-                <WelcomeText class="text-center">Login</WelcomeText>
+                <WelcomeText className="text-center">Login</WelcomeText>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="login-form">
                         <InputField

@@ -1,0 +1,24 @@
+---
+description: Enforces centralized ApiService usage and forbids raw axios or fetch imports across the codebase.
+globs: src/**/*.{js,jsx,ts,tsx}
+alwaysApply: true
+---
+
+# ApiService Enforcement Rule
+
+1. **Forbidden Operations**:
+   - `import axios from 'axios'` in pages or components.
+   - `window.fetch(...)` or `fetch(...)` calls.
+
+2. **Mandatory Import**:
+   ```javascript
+   import api from 'src/ApiService'; // or relative path to src/ApiService/index.js
+   ```
+
+3. **HTTP Client Capabilities**:
+   - `api.get(url, config)`
+   - `api.post(url, data, config)`
+   - `api.put(url, data, config)`
+   - `api.delete(url, config)`
+
+Refer to `.cursor/skills/api-service-guide.md` for full implementation playbooks.

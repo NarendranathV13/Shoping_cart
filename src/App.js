@@ -6,7 +6,7 @@ import Router from './Router/Router';
 function App() {
   const [isauth,setAuth]= useState("false")
   return (
-    <div className={isauth == "true" ? "content" :"bg-light "}>
+    <div className={isauth === "true" ? "content" :"bg-light "}>
        <BrowserRouter>
         <Router auth={setAuth}/>
       </BrowserRouter>

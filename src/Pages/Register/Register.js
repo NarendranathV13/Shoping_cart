@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../ApiService';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../Register/style.css'
@@ -36,8 +36,8 @@ const Register = () => {
     };
     //Language fetching api
     useEffect(() => {
-        // Fetch data from the API using axios
-        axios.get('https://65002c0e18c34dee0cd46da3.mockapi.io/Languages')
+        // Fetch data from the API using api.get
+        api.get('https://65002c0e18c34dee0cd46da3.mockapi.io/Languages')
             .then(response => {
                 // name of the language is stored in languages 
                 const languages = response.data.map(item => item.name);

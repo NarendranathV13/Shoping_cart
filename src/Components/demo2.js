@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../ApiService';
 
 function Demo2() {
   const [accessToken, setAccessToken] = useState(null);
@@ -7,7 +7,7 @@ function Demo2() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
+        const response = await api.get('https://www.universal-tutorial.com/api/getaccesstoken', {
           headers: {
             "Accept": "application/json",
             "api-token": "_6QhkbqS1xix_YwY8SlvaittqQgx1aUT5hkU5e22D5Juen2_298q4IOo-ttYU9g8Xco",
