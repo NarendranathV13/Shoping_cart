@@ -5,6 +5,7 @@ export const cartSlice = createSlice({
     cartItems: JSON.parse(localStorage.getItem('cart')) || [],
     cartCount: JSON.parse(localStorage.getItem('cart'))?.length || 0,
     orders: JSON.parse(localStorage.getItem('orders')) || [],
+    checkoutItem: null,
   },
   reducers: {
     addToCart: (state, action) => {
@@ -24,12 +25,36 @@ export const cartSlice = createSlice({
       state.cartCount -= 1; // reduce cart count
       localStorage.setItem('cart', JSON.stringify(state.cartItems)); // Update local storage
     },
-    //Place order from cart page
+    // Set checkout item for direct Buy Now navigation
+    setCheckoutItem: (state, action) => {
+      state.checkoutItem = action.payload;
+    },
+    // Place order reducer supporting both cart checkout and direct Buy Now
     addOrder: (state, action) => {
-      const order = action.payload;
-      state.orders.push(order);
-      state.cartCount = 0;//empty cart count
-      state.cartItems = [];// empty cart array
+      const payload = action.payload;
+      let newOrders = [];
+      let isCartCheckout = false;
+
+      if (payload && typeof payload === 'object') {
+        if (Array.isArray(payload.items)) {
+          newOrders = payload.items;
+          isCartCheckout = payload.isCartCheckout !== false;
+        } else if (payload.items) {
+          newOrders = [payload.items];
+          isCartCheckout = Boolean(payload.isCartCheckout);
+        } else {
+          newOrders = [payload];
+          isCartCheckout = Boolean(payload.isCartCheckout);
+        }
+      }
+
+      state.orders.push(...newOrders);
+      if (isCartCheckout) {
+        state.cartItems = [];
+        state.cartCount = 0;
+        localStorage.removeItem('cart');
+      }
+      state.checkoutItem = null;
       localStorage.setItem('orders', JSON.stringify(state.orders));
     },
     //place order from products page
@@ -51,5 +76,5 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, incrementCart, addOrder, removeFromCart, updateQuantity,addBuyNow } = cartSlice.actions;
+export const { addToCart, incrementCart, addOrder, removeFromCart, updateQuantity, addBuyNow, setCheckoutItem } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Customtoast from "../../Components/Customtoast";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart } from "../../Redux/cartSlice";
+import { removeFromCart, setCheckoutItem, updateQuantity } from "../../Redux/cartSlice";
 import Button from "../../Components/Button";
-import Swal from 'sweetalert2'; // Import SweetAlert
 import "../Cart/style.css"
-import { addOrder,updateQuantity } from "../../Redux/cartSlice";
+
 const Cart = () => {
     const cartItems = useSelector((state) => state.cart.cartItems);
     const [showToast, setShowToast] = useState(false); // state for toast
     const [toastMessage, setToastMessage] = useState('');
     const [toastColor, setToastColor] = useState('');
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const handleRemoveItem = (index) => {
         const updatedCart = [...cartItems];
         const itemToRemove = updatedCart[index];
@@ -31,16 +33,8 @@ const Cart = () => {
         return cartItems.reduce((total, item) => total + item.product_price_inr * (parseInt(item.quantity) || 1), 0);
     };
     const handlePlaceOrder = () => {
-        cartItems.forEach(item => {
-            dispatch(addOrder(item)); // Dispatch addOrder action for each item
-        });
-        localStorage.removeItem('cart');
-        Swal.fire({
-            icon: 'success',
-            title: 'Order placed successfully!',
-            timer: 3000,
-            showConfirmButton: true
-        });
+        dispatch(setCheckoutItem(null));
+        navigate('/Checkout');
     };
 
     const handleQuantityChange = (index, amount) => {
@@ -130,7 +124,7 @@ const Cart = () => {
                     </div>
                     <div className="col-lg-8 d-flex justify-content-end">
                         <Button text="Cancel" color="danger" onClick={() => console.log("Cancel clicked")} />
-                        <Button text="Place Order" color="success" onClick={handlePlaceOrder} />
+                        <Button text="Proceed to Checkout" color="success" onClick={handlePlaceOrder} />
                     </div>
                 </div>
             </div>

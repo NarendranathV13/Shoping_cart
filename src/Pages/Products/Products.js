@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { addToCart, addBuyNow } from "../../Redux/cartSlice";
+import { useNavigate } from "react-router-dom";
+import { addToCart, setCheckoutItem } from "../../Redux/cartSlice";
 import api from "../../ApiService";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ProductNav from "../../Components/ProductComponents/ProductNav";
 import "../Products/style.css"
 import Spinner from "../../Components/Spinner";
@@ -13,7 +14,7 @@ import ProductModal from "../../Components/ProductComponents/ProductModal";
 
 const Products = () => {
     const dispatch = useDispatch();
-    const cartItems = useSelector((state) => state.cart.cartItems);
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -73,8 +74,8 @@ const Products = () => {
         setShowModal(true);
     };
     const handleBuyNow = (product) => {
-        dispatch(addBuyNow(product));
-        handleShowToast(true, 'success', 'Order placed successfully'); // Updated line
+        dispatch(setCheckoutItem(product));
+        navigate('/Checkout');
     };
 
     return (
@@ -126,6 +127,11 @@ const Products = () => {
                                         <p className="short_description">{product.short_description}</p>
                                     </div>
                                 </div>
+                                <Button
+                                    text="View"
+                                    color="primary"
+                                    onClick={() => handleOpenModal(product)}
+                                />
                                 <Button
                                     text="Add to cart"
                                     color="warning"
