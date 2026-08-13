@@ -135,12 +135,15 @@ export default RegisterPage;
 
 ## 3. Key Rules & Guardrails
 
+### What to Do
 - Modify state using `createSlice` reducers cleanly without unrequested collateral mutations.
 - Distinguish between single-item operations (e.g. "Buy Now") and cart batch operations (e.g. "Cart Checkout").
 - Dispatch state changes atomically in single action calls instead of looping dispatches in `.forEach()`.
 - Leverage `{...formik.getFieldProps('fieldName')}` to reduce form input boilerplate (`value`, `onChange`, `onBlur`).
 - Define Yup validation schemas outside component render functions.
 - Route all form submission API requests through `ApiService` (`api.post(...)`).
+
+### What to Avoid
 - NEVER swallow `api.post(...)` errors with an empty `.catch()` inside `onSubmit` when expecting the `try...catch` block to present error alerts.
 
 ---

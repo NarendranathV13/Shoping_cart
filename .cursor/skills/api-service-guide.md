@@ -58,11 +58,17 @@ This skill provides instructions on how to call, extend, and manage API endpoint
 
 ## 4. Common Pitfalls & Guardrails
 
-| Avoid | Do Instead |
-| :--- | :--- |
-| `import axios from 'axios'` in components | `import api from 'src/ApiService'` |
-| Native `fetch()` calls | `api.get('/endpoint')` |
-| Manual Auth header construction in every request | Rely on `src/ApiService/api.js` interceptor |
-| Swallowing promise errors with `.catch()` inside `try/catch` | Allow errors to propagate so `catch (err)` triggers `Swal.fire` |
-| Scattering raw full URL strings across components | Define base paths or endpoint wrappers in `src/Api/` |
+### What to Do
+- `import api from 'src/ApiService'` instead of raw axios in components.
+- Use `api.get('/endpoint')` instead of native `fetch()`.
+- Rely on `src/ApiService/api.js` interceptor for Auth headers.
+- Allow errors to propagate so `catch (err)` triggers `Swal.fire`.
+- Define base paths or endpoint wrappers in `src/Api/`.
+
+### What to Avoid
+- Avoid `import axios from 'axios'` in components.
+- Avoid native `fetch()` calls.
+- Avoid manual Auth header construction in every request.
+- Avoid swallowing promise errors with `.catch()` inside `try/catch`.
+- Avoid scattering raw full URL strings across components.
 

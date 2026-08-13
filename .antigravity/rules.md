@@ -6,13 +6,20 @@ This document defines the strict operational rules, layer constraints, and code 
 
 ## 1. Core Architecture & Stack Rules
 
-- **Framework**: React 18 (Functional Components & Hooks ONLY. Options API & Class Components are **strictly forbidden**).
-- **State Management**: Redux Toolkit (`src/Redux/`). State MUST be modified via `createSlice` reducers. Direct state mutation outside Redux is forbidden.
-- **HTTP Layer**: Centralized Axios Client (`src/ApiService/index.js`). Direct `axios` imports or native `fetch()` in pages/components are **strictly forbidden**.
+### What to Do
+- **Framework**: React 18 (Functional Components & Hooks ONLY).
+- **State Management**: Redux Toolkit (`src/Redux/`). State MUST be modified via `createSlice` reducers.
+- **HTTP Layer**: Centralized Axios Client (`src/ApiService/index.js`).
 - **Routing**: React Router v6 (`src/Router/`).
 - **Forms & Validation**: Formik + Yup schema validation.
-- **Styling**: Bootstrap 5 + Styled-Components (`src/StyledComponent/`). Avoid inline `style={{...}}`.
+- **Styling**: Bootstrap 5 + Styled-Components (`src/StyledComponent/`).
 - **User Notifications**: SweetAlert2 (`Swal.fire`) for dialogs; `<Customtoast />` for toast messages.
+
+### What to Avoid
+- **Framework**: Options API & Class Components are **strictly forbidden**.
+- **State Management**: Direct state mutation outside Redux is forbidden.
+- **HTTP Layer**: Direct `axios` imports or native `fetch()` in pages/components are **strictly forbidden**.
+- **Styling**: Avoid inline `style={{...}}`.
 
 ---
 
@@ -46,18 +53,26 @@ src/
 
 ## 3. Layer Enforcement Rules
 
+### What to Do
+
 1. **`src/Pages/` (Routed Views)**:
    - MUST be thin layout handlers.
    - MUST destructure Redux state/dispatch and invoke `ApiService`.
-   - MUST NOT duplicate UI components or contain raw axios logic.
 
 2. **`src/Components/` (Reusable Components)**:
    - MUST be pure functional components receiving props (`text`, `color`, `onClick`, `show`, `data`).
-   - MUST NOT make direct raw API network calls.
 
 3. **`src/ApiService/` (HTTP Service Layer)**:
    - Centralizes Axios configuration, base URLs, and pre/post interceptors.
    - All network traffic MUST pass through `src/ApiService/index.js`.
+
+### What to Avoid
+
+1. **`src/Pages/` (Routed Views)**:
+   - MUST NOT duplicate UI components or contain raw axios logic.
+
+2. **`src/Components/` (Reusable Components)**:
+   - MUST NOT make direct raw API network calls.
 
 ---
 
@@ -90,25 +105,41 @@ Refer to the corresponding skill guide for practical step-by-step implementation
 
 ---
 
-## 6. Team Prompt Playbook
+## 6. Team Commands & Prompts
 
 For standardized team prompts (creating features, running skill reviews & audit summaries), refer to:
 - `docs/AI_PROMPTS.md`
+
+- **Sync Skills**: `./scripts/sync-skills.sh` (Run only when skills are changed and tracked)
 
 ---
 
 ## 7. Strict Architectural Guardrails & Anti-Patterns
 
-To eliminate recurring bugs, all developers and AI assistants MUST follow these strict guardrails:
+### What to Do
+- **Dispatches MUST be Atomic**: Always dispatch a single action carrying a batch payload array.
+- **Async Error Propagation**: Allow HTTP errors to throw directly into the outer `catch (error)` block in Formik handlers where a surrounding `try...catch` block handles errors.
+- **Build & Code Hygiene**: Codebase MUST compile cleanly with `npm run build`.
 
-### A. State Side-Effect Guardrail
-- **Reducers MUST NOT cause collateral state damage**: Redux reducers (e.g., `addOrder`) MUST NOT unconditionally clear user cart state (`cartItems`, `cartCount`) unless the user explicitly completed a cart checkout (`isCartCheckout: true`). Single-item checkouts (e.g., "Buy Now") MUST preserve existing cart items.
-- **Dispatches MUST be Atomic**: NEVER invoke `dispatch(...)` inside loops (`.forEach`, `for...of`). Always dispatch a single action carrying a batch payload array.
+### What to Avoid
+- **State Side-Effect Guardrail**: Redux reducers (e.g., `addOrder`) MUST NOT unconditionally clear user cart state (`cartItems`, `cartCount`) unless the user explicitly completed a cart checkout (`isCartCheckout: true`). Single-item checkouts (e.g., "Buy Now") MUST preserve existing cart items.
+- **Looping Dispatches**: NEVER invoke `dispatch(...)` inside loops (`.forEach`, `for...of`).
+- **Swallowing Promise Rejections**: In Formik form handlers, NEVER chain inline empty `.catch()` handlers onto `api.post()` or `api.get()` calls if a surrounding `try...catch` block is responsible for displaying error popups (`Swal.fire`).
+- **ESLint Warnings**: Avoid unused variable warnings (`no-unused-vars`), missing react-hooks dependencies (`react-hooks/exhaustive-deps`), or loose equality warnings (`eqeqeq`).
 
-### B. Async Error Propagation Guardrail
-- **NEVER swallow promise rejections in `onSubmit`**: In Formik form handlers, NEVER chain inline empty `.catch()` handlers onto `api.post()` or `api.get()` calls if a surrounding `try...catch` block is responsible for displaying error popups (`Swal.fire`). Allow HTTP errors to throw directly into the outer `catch (error)` block.
+---
 
-### C. Build & Code Hygiene Guardrail
-- **Zero ESLint Warnings**: Codebase MUST compile cleanly with `npm run build` without unused variable warnings (`no-unused-vars`), missing react-hooks dependencies (`react-hooks/exhaustive-deps`), or loose equality warnings (`eqeqeq`).
+## 8. Naming Conventions & Folder Structure
+
+### What to Do:
+- **Variables**: Use `camelCase` for standard variables and functions (e.g., `cartItems`, `fetchData`). Use `UPPER_SNAKE_CASE` for constants.
+- **Components**: Use `PascalCase` for component names and their filenames (e.g., `ProductModal.js`, `Customtoast.js`).
+- **Folders**: Use `PascalCase` for new component/page folders (e.g., `ProductComponents/`, `Cart/`).
+- Keep names descriptive and relevant to their domain context.
+
+### What to Avoid:
+- **Variables**: Avoid cryptic or overly short variable names (e.g., `x`, `dat`, `arr`). Do not use `snake_case` or `PascalCase` for variables.
+- **Components**: Do not use `camelCase` or `kebab-case` for component names (e.g., `productModal.js`, `product-modal.js`).
+- **Folders**: Avoid creating deeply nested folder structures. Do not use `lowercase` or `kebab-case` for React component directories.
 
 

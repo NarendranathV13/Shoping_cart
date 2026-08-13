@@ -117,9 +117,15 @@ export default CardBadge;
 
 ---
 
-## 4. Reusability Checklist
+## 4. Reusability Guidelines
 
-- [ ] Scanned `src/Components/` before writing UI elements.
-- [ ] Reused existing shared components instead of duplicating code.
-- [ ] Placed new components in `src/Components/`.
-- [ ] Kept components pure, receiving dynamic props without hardcoded static data or raw API calls.
+### What to Do
+- Scan `src/Components/` before writing UI elements.
+- Reuse existing shared components instead of duplicating code.
+- Place new components in `src/Components/`.
+- Keep components pure, receiving dynamic props without hardcoded static data.
+
+### What to Avoid
+- Avoid duplicating UI code that already exists in `src/Components/`.
+- Avoid placing shared UI components outside of `src/Components/`.
+- Avoid hardcoding static data or raw API calls within reusable components.
