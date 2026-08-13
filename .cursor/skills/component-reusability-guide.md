@@ -1,7 +1,7 @@
 ---
 name: component-reusability-guide
 description: Simplified skill playbook for folder structure, reusing existing common components, and creating new reusable components
-tags: [react, components, reusability, bootstrap, UI, code-examples]
+tags: [react, components, reusability, tailwind, UI, code-examples]
 ---
 
 # Skill: React Component Architecture & Reusability Playbook
@@ -14,7 +14,7 @@ This skill provides step-by-step implementation playbooks and code examples for 
 
 | Component | File Path | Supported Props | Purpose |
 | :--- | :--- | :--- | :--- |
-| **`Button`** | `src/Components/Button.js` | `text`, `color`, `onClick` | Reusable generic action button styled with Bootstrap theme colors. |
+| **`Button`** | `src/Components/Button.js` | `text`, `color`, `onClick`, `className` | Reusable generic action button styled with Tailwind CSS colors. |
 | **`Spinner`** | `src/Components/Spinner.js` | None | Centered loading spinner indicator. |
 | **`Customtoast`** | `src/Components/Customtoast.js` | `show`, `message`, `color`, `onClose` | Auto-dismissing floating toast notification. |
 | **`Navbar1`** | `src/Components/Navbar/Navbar1.js` | None (Connects to Redux) | Navigation bar header with logo, search bar, and cart count. |
@@ -57,23 +57,21 @@ const ProductsPage = () => {
     return (
         <div>
             <Navbar1 />
-            <div className="container mt-4">
-                <h2>Product Catalog</h2>
+            <div className="container mx-auto mt-8 px-4">
+                <h2 className="text-2xl font-bold text-gray-800 mb-6">Product Catalog</h2>
                 {loading ? (
                     <Spinner />
                 ) : (
-                    <div className="row">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {products.map((item) => (
-                            <div key={item.id} className="col-md-4 mb-3">
-                                <div className="card p-3 shadow-sm">
-                                    <h5>{item.product_name}</h5>
-                                    <p>₹{item.product_price_inr}</p>
-                                    <Button 
-                                        text="View Details" 
-                                        color="primary" 
-                                        onClick={() => handleSelect(item.product_name)} 
-                                    />
-                                </div>
+                            <div key={item.id} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                                <h5 className="font-semibold text-lg">{item.product_name}</h5>
+                                <p className="text-gray-600 my-2">₹{item.product_price_inr}</p>
+                                <Button 
+                                    text="View Details" 
+                                    color="primary" 
+                                    onClick={() => handleSelect(item.product_name)} 
+                                />
                             </div>
                         ))}
                     </div>
@@ -105,8 +103,18 @@ import React from 'react';
 const CardBadge = ({ label, color = 'primary' }) => {
     if (!label) return null;
 
+    const bgColors = {
+        primary: 'bg-indigo-100 text-indigo-800',
+        secondary: 'bg-gray-100 text-gray-800',
+        success: 'bg-green-100 text-green-800',
+        danger: 'bg-red-100 text-red-800',
+        warning: 'bg-yellow-100 text-yellow-800'
+    };
+    
+    const badgeColor = bgColors[color] || bgColors.primary;
+
     return (
-        <span className={`badge bg-${color} p-2`}>
+        <span className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${badgeColor}`}>
             {label}
         </span>
     );
@@ -124,8 +132,10 @@ export default CardBadge;
 - Reuse existing shared components instead of duplicating code.
 - Place new components in `src/Components/`.
 - Keep components pure, receiving dynamic props without hardcoded static data.
+- Ensure components are styled using Tailwind CSS classes.
 
 ### What to Avoid
 - Avoid duplicating UI code that already exists in `src/Components/`.
 - Avoid placing shared UI components outside of `src/Components/`.
 - Avoid hardcoding static data or raw API calls within reusable components.
+- Avoid using legacy Bootstrap CSS classes (e.g., `btn`, `container`, `card`). Use Tailwind utility classes instead.

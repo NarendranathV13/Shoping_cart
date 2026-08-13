@@ -32,10 +32,16 @@ const BarChart = ({ products, cart, orders }) => {
     ],
   };
   const options = {
- 
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
   };
   return (
-    <div>
+    <div className="w-full h-full pb-10">
       <Bar data={data} options={options} />
     </div>
   );

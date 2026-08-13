@@ -1,13 +1,14 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
-import Swal from 'sweetalert2'; // Import SweetAlert
+import Swal from 'sweetalert2'; 
+import Button from "../../Components/Button";
 
-import { Contain, LoginButton, InputField, Heading, LoginContainer, WelcomeText } from "../../StyledComponent/LoginStyle"; // Update the import path
-const Login = ({auth}) => {
+const Login = ({ auth }) => {
     const isAuth = localStorage.getItem("isAuth");
     const navigate = useNavigate();
+    
     const validationSchema = Yup.object().shape({
         email: Yup.string().email("Invalid email").required("Email is required"),
         password: Yup.string()
@@ -17,6 +18,7 @@ const Login = ({auth}) => {
             )
             .required('Password is required'),
     });
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -24,75 +26,135 @@ const Login = ({auth}) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            // Retrieve data from local storage
             const savedData = JSON.parse(localStorage.getItem("formData"));
             if (savedData && savedData.email === values.email && savedData.password === values.password) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Logged in successfully!',
                     timer: 1500,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    customClass: {
+                        popup: 'rounded-2xl'
+                    }
                 });
                 localStorage.setItem("isAuth", "true");
                 navigate("/");
-                auth("true"); //changing the state of router for navbar visibility
+                if (auth) auth("true"); 
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Invalid email or password',
+                    customClass: {
+                        popup: 'rounded-2xl',
+                        confirmButton: 'bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-lg text-white font-medium transition-colors border-none'
+                    }
                 });
-                auth("false");
+                if (auth) auth("false");
             }
         },
     });
-      // for prevent navigation back to login page
-      useEffect(() => {
+
+    useEffect(() => {
         if (isAuth === "true") {
             navigate("/");
-        } else {
-            navigate("/Login");
         }
     }, [isAuth, navigate]);
+
     return (
-        <Contain>
-            <LoginContainer>
-                <Heading>Welcome</Heading>
-                <WelcomeText className="text-center">Login</WelcomeText>
-                <form onSubmit={formik.handleSubmit}>
-                    <div className="login-form">
-                        <InputField
-                            type="email"
-                            placeholder="user email"
-                            id="email"
-                            name="email"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.email}
-                        />
-                        {formik.touched.email && formik.errors.email ? (
-                            <div className="text-center text-danger">{formik.errors.email}</div>
-                        ) : null}
-                        <InputField
-                            type="password"
-                            placeholder="Password"
-                            id="password"
-                            name="password"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.password}
-                        />
-                        {formik.touched.password && formik.errors.password ? (
-                            <div className="text-center text-danger">{formik.errors.password}</div>
-                        ) : null}
-                        <LoginButton type="submit">Login</LoginButton>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-teal-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl border border-white/40 backdrop-blur-sm">
+                <div className="text-center">
+                    <div className="mx-auto h-16 w-16 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg transform -rotate-6">
+                        <i className="fa-brands fa-shopify text-3xl text-white"></i>
                     </div>
-                    <p className="text-center">New user?</p>
-                    <LoginButton type="button">
-                    <Link className="nav-link text-white" to="/Register">Register</Link>
-                    </LoginButton>
+                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900 tracking-tight">Welcome Back</h2>
+                    <p className="mt-2 text-sm text-gray-500">
+                        Please sign in to your account
+                    </p>
+                </div>
+                
+                <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
+                    <div className="space-y-4">
+                        <div>
+                            <label htmlFor="email" className="sr-only">Email address</label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
+                                className={`appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm transition-all ${formik.touched.email && formik.errors.email ? 'border-red-500 focus:ring-red-400' : 'focus:ring-indigo-500 hover:bg-gray-50'}`}
+                                placeholder="Email address"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.email}
+                            />
+                            {formik.touched.email && formik.errors.email && (
+                                <p className="mt-1 text-sm text-red-500">{formik.errors.email}</p>
+                            )}
+                        </div>
+                        <div>
+                            <label htmlFor="password" className="sr-only">Password</label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                autoComplete="current-password"
+                                className={`appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm transition-all ${formik.touched.password && formik.errors.password ? 'border-red-500 focus:ring-red-400' : 'focus:ring-indigo-500 hover:bg-gray-50'}`}
+                                placeholder="Password"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.password}
+                            />
+                            {formik.touched.password && formik.errors.password && (
+                                <p className="mt-1 text-sm text-red-500">{formik.errors.password}</p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                            <input
+                                id="remember-me"
+                                name="remember-me"
+                                type="checkbox"
+                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer"
+                            />
+                            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 cursor-pointer">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <div className="text-sm">
+                            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                                Forgot your password?
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button
+                            type="submit"
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md transition-all duration-200"
+                        >
+                            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                                <i className="fa-solid fa-lock text-indigo-400 group-hover:text-indigo-300 transition-colors"></i>
+                            </span>
+                            Sign In
+                        </button>
+                    </div>
                 </form>
-            </LoginContainer>
-        </Contain>
+                
+                <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-600">
+                        New user?{' '}
+                        <Link to="/Register" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                            Create an account
+                        </Link>
+                    </p>
+                </div>
+            </div>
+        </div>
     );
 };
+
 export default Login;

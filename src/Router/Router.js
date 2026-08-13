@@ -8,7 +8,6 @@ import Dashboard from "../Pages/Dashboard";
 import Products from "../Pages/Products/Products";
 import Myorders from "../Pages/Myorders";
 import Cart from "../Pages/Cart/Cart";
-import Checkout from "../Pages/Checkout/Checkout";
 
 const Router = ({auth}) =>{
     const [isAuth, setAuth] = useState(localStorage.getItem("isAuth"))
@@ -27,7 +26,6 @@ const Router = ({auth}) =>{
                     <Route path="/Products" element={<Products />} />
                     <Route path="/Myorders" element={<Myorders />} />
                     <Route path="/Cart" element={<Cart />} />
-                    <Route path="/Checkout" element={<Checkout />} />
                 </Route>
             </Routes>
         </>

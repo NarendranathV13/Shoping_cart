@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addToCart, setCheckoutItem } from "../../Redux/cartSlice";
+import { addToCart, addBuyNow } from "../../Redux/cartSlice";
 import api from "../../ApiService";
 import { useDispatch } from 'react-redux';
 import ProductNav from "../../Components/ProductComponents/ProductNav";
@@ -8,9 +8,7 @@ import "../Products/style.css"
 import Spinner from "../../Components/Spinner";
 import Button from "../../Components/Button";
 import Customtoast from "../../Components/Customtoast.js";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import ProductModal from "../../Components/ProductComponents/ProductModal";
-
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -74,83 +72,65 @@ const Products = () => {
         setShowModal(true);
     };
     const handleBuyNow = (product) => {
-        dispatch(setCheckoutItem(product));
-        navigate('/Checkout');
+        dispatch(addBuyNow(product));
+        handleShowToast(true, 'success', 'Order placed successfully!');
+        setTimeout(() => navigate('/Myorders'), 500);
     };
 
     return (
-        <div className="container">
-            <div className="row mt-2">
-                <div className="col-lg-12">
+        <div className="w-full px-6 md:px-10 py-8">
+            <div className="mb-8">
                 <ProductNav onSearch={handleSearch} onSort={sortProducts} />
-                </div>
             </div>
-            <div className="row">
-                {/* Spinner */}
-                {loading && <Spinner />}
-                {filteredProducts.map((product) => (
-                    <div className="col-lg-4 " key={product.id}>
-                        <div
-                            className="card  mt-2 mb-2 mx-5 shadow-lg rounded-5 custom-card"
-                            style={{ width: "20rem" }}
+            
+            {loading ? (
+                <Spinner />
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {filteredProducts.map((product) => (
+                        <div 
+                            key={product.id} 
+                            className="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transform transition-all duration-300 hover:-translate-y-1 overflow-hidden flex flex-col h-full"
                         >
-                            {/* <img
-                                src={product.image_url}
-                                className="card-img-top rounded-5"
-                                alt="..."
-                                onClick={() => handleOpenModal(product)}
-                                data-bs-toggle="modal" data-bs-target="#productModal"
-                            /> */}
-
-                            <div className="card-body mx-2 my-2">
-                                <div className="row productsCol">
-                                    <div className="col">
-                                        <h6 className="card-title">Name :</h6>
-                                    </div>
-                                    <div className="col">
-                                        <p className="product_name">{product.product_name}</p>
-                                    </div>
+                            {/* <div className="h-48 overflow-hidden cursor-pointer" onClick={() => handleOpenModal(product)}>
+                                <img src={product.image_url} alt={product.product_name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                            </div> */}
+                            
+                            <div className="p-5 flex-1 flex flex-col">
+                                <h3 className="text-xl font-bold text-gray-800 mb-2 truncate" title={product.product_name}>
+                                    {product.product_name}
+                                </h3>
+                                
+                                <p className="text-2xl font-extrabold text-indigo-600 mb-3">
+                                    ₹{product.product_price_inr}
+                                </p>
+                                
+                                <p className="text-sm text-gray-500 mb-6 line-clamp-2 flex-1">
+                                    {product.short_description}
+                                </p>
+                                
+                                <div className="flex flex-wrap gap-2 mt-auto">
+                                    <Button
+                                        text="Buy Now"
+                                        color="success"
+                                        onClick={() => handleBuyNow(product)}
+                                        className="flex-1 py-1.5 px-3 text-sm !mx-0 !mt-0"
+                                    />
+                                    <Button
+                                        text="Add"
+                                        color="warning"
+                                        onClick={() => handleAddToCart(product)}
+                                        className="flex-1 py-1.5 px-3 text-sm !mx-0 !mt-0"
+                                    />
                                 </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <h6 className="card-text">Price :</h6>
-                                    </div>
-                                    <div className="col">
-                                        <p className="product_price">{product.product_price_inr}</p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <h6 className="card-text">Description :</h6>
-                                    </div>
-                                    <div className="col">
-                                        <p className="short_description">{product.short_description}</p>
-                                    </div>
-                                </div>
-                                <Button
-                                    text="View"
-                                    color="primary"
-                                    onClick={() => handleOpenModal(product)}
-                                />
-                                <Button
-                                    text="Add to cart"
-                                    color="warning"
-                                    onClick={() => handleAddToCart(product)}
-                                />
-                                <Button
-                                    text="Buy now"
-                                    color="success"
-                                    onClick={() => handleBuyNow(product)}
-                                />
-
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
-            {/* modal for product display */}
-                    <ProductModal   selectedProduct={selectedProduct}
-                showModal={showModal} />
+                    ))}
+                </div>
+            )}
+            
+            <ProductModal selectedProduct={selectedProduct} showModal={showModal} onClose={() => setShowModal(false)} />
+            
             {showToast && (
                 <Customtoast
                     show={showToast}
