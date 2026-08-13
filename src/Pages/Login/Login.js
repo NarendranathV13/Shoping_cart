@@ -4,20 +4,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import Swal from 'sweetalert2'; 
 import Button from "../../Components/Button";
+import InputField from "../../Components/InputField";
+
+const validationSchema = Yup.object().shape({
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+        .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+            'Password must have minimum 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character'
+        )
+        .required('Password is required'),
+});
 
 const Login = ({ auth }) => {
     const isAuth = localStorage.getItem("isAuth");
     const navigate = useNavigate();
-    
-    const validationSchema = Yup.object().shape({
-        email: Yup.string().email("Invalid email").required("Email is required"),
-        password: Yup.string()
-            .matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                'Password must have minimum 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character'
-            )
-            .required('Password is required'),
-    });
 
     const formik = useFormik({
         initialValues: {
@@ -75,40 +76,8 @@ const Login = ({ auth }) => {
                 
                 <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
                     <div className="space-y-4">
-                        <div>
-                            <label htmlFor="email" className="sr-only">Email address</label>
-                            <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                className={`appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm transition-all ${formik.touched.email && formik.errors.email ? 'border-red-500 focus:ring-red-400' : 'focus:ring-indigo-500 hover:bg-gray-50'}`}
-                                placeholder="Email address"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.email}
-                            />
-                            {formik.touched.email && formik.errors.email && (
-                                <p className="mt-1 text-sm text-red-500">{formik.errors.email}</p>
-                            )}
-                        </div>
-                        <div>
-                            <label htmlFor="password" className="sr-only">Password</label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                className={`appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm transition-all ${formik.touched.password && formik.errors.password ? 'border-red-500 focus:ring-red-400' : 'focus:ring-indigo-500 hover:bg-gray-50'}`}
-                                placeholder="Password"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.password}
-                            />
-                            {formik.touched.password && formik.errors.password && (
-                                <p className="mt-1 text-sm text-red-500">{formik.errors.password}</p>
-                            )}
-                        </div>
+                        <InputField label="Email address" id="email" type="email" formik={formik} placeholder="Email address" hideLabel={true} />
+                        <InputField label="Password" id="password" type="password" formik={formik} placeholder="Password" hideLabel={true} />
                     </div>
 
                     <div className="flex items-center justify-between">
@@ -132,15 +101,16 @@ const Login = ({ auth }) => {
                     </div>
 
                     <div>
-                        <button
+                        <Button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md transition-all duration-200"
+                            color="primary"
+                            className="group relative w-full flex justify-center py-3 px-4 !mx-0 border border-transparent shadow-md transition-all duration-200"
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                                 <i className="fa-solid fa-lock text-indigo-400 group-hover:text-indigo-300 transition-colors"></i>
                             </span>
                             Sign In
-                        </button>
+                        </Button>
                     </div>
                 </form>
                 

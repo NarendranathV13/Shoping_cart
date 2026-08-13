@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { addToCart, addBuyNow } from "../../Redux/cartSlice";
-import api from "../../ApiService";
+import { fetchProducts } from "../../Api/Endpoints";
 import { useDispatch } from 'react-redux';
 import ProductNav from "../../Components/ProductComponents/ProductNav";
 import "../Products/style.css"
@@ -23,7 +23,7 @@ const Products = () => {
     const [toastColor, setToastColor] = useState('');
 
     useEffect(() => {
-        api.get('https://64db5089593f57e435b0c522.mockapi.io/products')
+        fetchProducts()
             .then(response => {
                 setProducts(response.data);
                 setFilteredProducts(response.data);
