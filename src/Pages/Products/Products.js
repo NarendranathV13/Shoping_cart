@@ -8,7 +8,7 @@ import "../Products/style.css"
 import Spinner from "../../Components/Spinner";
 import Button from "../../Components/Button";
 import Customtoast from "../../Components/Customtoast.js";
-import ProductModal from "../../Components/ProductComponents/ProductModal";
+import Swal from "sweetalert2";
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -17,8 +17,6 @@ const Products = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [showToast, setShowToast] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
     const [toastMessage, setToastMessage] = useState('');
     const [toastColor, setToastColor] = useState('');
 
@@ -30,7 +28,7 @@ const Products = () => {
                 setLoading(false);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+                Swal.fire('Error', 'Failed to fetch data', 'error');
                 setLoading(false);
             });
     }, []);
@@ -66,10 +64,6 @@ const Products = () => {
     const handleAddToCart = (product) => {
         dispatch(addToCart(product));
         handleShowToast(true, 'warning','Product is added to cart');
-    };
-    const handleOpenModal = (product) => {
-        setSelectedProduct(product);
-        setShowModal(true);
     };
     const handleBuyNow = (product) => {
         dispatch(addBuyNow(product));
@@ -128,8 +122,6 @@ const Products = () => {
                     ))}
                 </div>
             )}
-            
-            <ProductModal selectedProduct={selectedProduct} showModal={showModal} onClose={() => setShowModal(false)} />
             
             {showToast && (
                 <Customtoast

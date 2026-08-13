@@ -6,7 +6,7 @@ import Cities from '../../Api/Cities';
 import States from '../../Api/States';
 import { fetchLanguages } from '../../Api/Endpoints';
 import Swal from 'sweetalert2'; 
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../Components/Button';
 import InputField from '../../Components/InputField';
 
@@ -36,7 +36,6 @@ const Register = () => {
     const [languageOptions, setLanguageOptions] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedState, setSelectedState] = useState('');
-    const [selectedCity, setSelectedCity] = useState('');
 
     const handleCountryChange = (e) => {
         setSelectedCountry(e.target.value);
@@ -53,7 +52,6 @@ const Register = () => {
     };
 
     const handleCityChange = (e) => {
-        setSelectedCity(e.target.value);
         formik.setFieldValue('city', e.target.value);
     };
 
@@ -63,7 +61,7 @@ const Register = () => {
                 const languages = response.data.map(item => item.name);
                 setLanguageOptions(languages);
             })
-            .catch(error => console.error('Error fetching data:', error));
+            .catch(error => Swal.fire('Error', 'Failed to fetch data', 'error'));
     }, []);
 
     const formik = useFormik({
@@ -82,7 +80,6 @@ const Register = () => {
         onSubmit: (values, { resetForm }) => {
             localStorage.setItem('formData', JSON.stringify(values));
             localStorage.setItem("isAuth", "false");
-            setSelectedCity('');
             setSelectedCountry('');
             setSelectedState('');
             resetForm();
