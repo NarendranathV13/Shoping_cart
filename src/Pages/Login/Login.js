@@ -94,9 +94,9 @@ const Login = ({ auth }) => {
                         </div>
 
                         <div className="text-sm">
-                            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
                                 Forgot your password?
-                            </a>
+                            </button>
                         </div>
                     </div>
 

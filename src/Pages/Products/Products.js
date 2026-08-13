@@ -9,6 +9,7 @@ import Spinner from "../../Components/Spinner";
 import Button from "../../Components/Button";
 import Customtoast from "../../Components/Customtoast.js";
 import Swal from "sweetalert2";
+import ProductModal from "../../Components/ProductComponents/ProductModal";
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -17,6 +18,8 @@ const Products = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [showToast, setShowToast] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const [toastMessage, setToastMessage] = useState('');
     const [toastColor, setToastColor] = useState('');
 
@@ -65,6 +68,10 @@ const Products = () => {
         dispatch(addToCart(product));
         handleShowToast(true, 'warning','Product is added to cart');
     };
+    const handleOpenModal = (product) => {
+        setSelectedProduct(product);
+        setShowModal(true);
+    };
     const handleBuyNow = (product) => {
         dispatch(addBuyNow(product));
         handleShowToast(true, 'success', 'Order placed successfully!');
@@ -86,9 +93,9 @@ const Products = () => {
                             key={product.id} 
                             className="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transform transition-all duration-300 hover:-translate-y-1 overflow-hidden flex flex-col h-full"
                         >
-                            {/* <div className="h-48 overflow-hidden cursor-pointer" onClick={() => handleOpenModal(product)}>
+                            <div className="h-48 overflow-hidden cursor-pointer" onClick={() => handleOpenModal(product)}>
                                 <img src={product.image_url} alt={product.product_name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
-                            </div> */}
+                            </div>
                             
                             <div className="p-5 flex-1 flex flex-col">
                                 <h3 className="text-xl font-bold text-gray-800 mb-2 truncate" title={product.product_name}>
@@ -122,6 +129,8 @@ const Products = () => {
                     ))}
                 </div>
             )}
+            
+            <ProductModal selectedProduct={selectedProduct} showModal={showModal} onClose={() => setShowModal(false)} />
             
             {showToast && (
                 <Customtoast
