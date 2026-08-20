@@ -35,6 +35,63 @@ This skill provides instructions on how to call, extend, and manage API endpoint
    export const createOrder = (orderData) => api.post('/orders', orderData);
    ```
 
+4. **UI Component Integration Example with Shadcn UI**:
+   ```javascript
+   // Example: Fetching and displaying data in a Shadcn UI Table component
+   import React, { useEffect, useState } from 'react';
+   import api from '../../ApiService';
+   import Spinner from '../../Components/Spinner';
+   import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../../Components/ui/table';
+   import { Button } from '../../Components/ui/button';
+   import Swal from 'sweetalert2';
+
+   const OrderHistory = () => {
+       const [orders, setOrders] = useState([]);
+       const [loading, setLoading] = useState(true);
+
+       useEffect(() => {
+           api.get('/orders')
+               .then((res) => setOrders(res.data || []))
+               .catch((err) => Swal.fire('Error', err?.response?.data?.message || 'Failed to fetch orders', 'error'))
+               .finally(() => setLoading(false));
+       }, []);
+
+       if (loading) return <Spinner />;
+
+       return (
+           <div className="p-4 border rounded-xl shadow-sm bg-white">
+               <h3 className="text-lg font-semibold mb-4">Order History</h3>
+               <Table>
+                   <TableHeader>
+                       <TableRow>
+                           <TableHead>Order ID</TableHead>
+                           <TableHead>Date</TableHead>
+                           <TableHead>Total Amount</TableHead>
+                           <TableHead className="text-right">Actions</TableHead>
+                       </TableRow>
+                   </TableHeader>
+                   <TableBody>
+                       {orders.map((order) => (
+                           <TableRow key={order.id}>
+                               <TableCell className="font-medium">#{order.id}</TableCell>
+                               <TableCell>{order.date}</TableCell>
+                               <TableCell>₹{order.total}</TableCell>
+                               <TableCell className="text-right">
+                                   <Button variant="outline" size="sm" onClick={() => console.log(order.id)}>
+                                       Details
+                                   </Button>
+                               </TableCell>
+                           </TableRow>
+                       ))}
+                   </TableBody>
+               </Table>
+           </div>
+       );
+   };
+
+   export default OrderHistory;
+   ```
+
 ---
 
 ## 2. Layer & Responsibilities

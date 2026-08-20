@@ -75,6 +75,9 @@ import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
 import api from '../../ApiService';
 import Spinner from '../../Components/Spinner';
+import InputField from '../../Components/InputField';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../Components/ui/card';
+import { Button } from '../../Components/ui/button';
 import { registerValidationSchema } from './RegisterSchema';
 
 const RegisterPage = () => {
@@ -98,39 +101,40 @@ const RegisterPage = () => {
     });
 
     return (
-        <div className="container mt-5" style={{ maxWidth: '400px' }}>
-            <form onSubmit={formik.handleSubmit} className="card p-4 shadow-sm">
-                <h3 className="mb-3 text-center">Register</h3>
-
-                {/* Email Field */}
-                <div className="mb-3">
-                    <label className="form-label">Email Address</label>
-                    <input
-                        type="email"
-                        className={`form-control ${formik.touched.email && formik.errors.email ? 'is-invalid' : ''}`}
-                        {...formik.getFieldProps('email')}
-                    />
-                    {formik.touched.email && formik.errors.email && (
-                        <div className="invalid-feedback">{formik.errors.email}</div>
-                    )}
-                </div>
-
-                {/* Password Field */}
-                <div className="mb-3">
-                    <label className="form-label">Password</label>
-                    <input
-                        type="password"
-                        className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
-                        {...formik.getFieldProps('password')}
-                    />
-                    {formik.touched.password && formik.errors.password && (
-                        <div className="invalid-feedback">{formik.errors.password}</div>
-                    )}
-                </div>
-
-                {/* Submit Button or Loading Indicator */}
-                {loading ? <Spinner /> : <button type="submit" className="btn btn-primary w-100">Submit</button>}
-            </form>
+        <div className="flex justify-center items-center min-h-screen p-4">
+            <Card className="w-full max-w-md shadow-md">
+                <CardHeader>
+                    <CardTitle className="text-2xl font-bold text-center">Register</CardTitle>
+                    <CardDescription className="text-center">Create a new account to get started</CardDescription>
+                </CardHeader>
+                <form onSubmit={formik.handleSubmit}>
+                    <CardContent className="space-y-4">
+                        <InputField
+                            label="Email Address"
+                            id="email"
+                            type="email"
+                            placeholder="name@example.com"
+                            formik={formik}
+                        />
+                        <InputField
+                            label="Password"
+                            id="password"
+                            type="password"
+                            placeholder="Enter password"
+                            formik={formik}
+                        />
+                    </CardContent>
+                    <CardFooter>
+                        {loading ? (
+                            <Spinner />
+                        ) : (
+                            <Button type="submit" className="w-full">
+                                Submit
+                            </Button>
+                        )}
+                    </CardFooter>
+                </form>
+            </Card>
         </div>
     );
 };
