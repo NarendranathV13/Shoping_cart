@@ -1,29 +1,30 @@
 ---
 name: skill-compliance-review
-description: Playbook and checklist for auditing recent commits or uncommitted changes against established project skills, architectural rules, layer boundaries, component reusability, and ApiService standards.
-tags: [review, compliance, skill-audit, git-commit, architecture, code-review]
+description: Playbook and checklist for auditing recent commits or uncommitted changes against established project skills, architectural rules, layer boundaries, component reusability, Shadcn UI standards, and ApiService standards.
+tags: [review, compliance, skill-audit, git-commit, architecture, code-review, shadcn-ui]
 ---
 
 # Skill: Codebase & Commit Skill Compliance Review
 
 ## Purpose
-This skill provides a systematic playbook and audit checklist for reviewing recent git commits or working directory changes to verify whether they adhere strictly to the project's established skills, operational rules, layer constraints, and component reusability guidelines.
+This skill provides a systematic playbook and audit checklist for reviewing recent git commits or working directory changes to verify whether they adhere strictly to the project's established skills, operational rules, layer constraints, component reusability guidelines, and Shadcn UI conventions.
 
 ---
 
 ## 1. Audit Pillars & Checklist
 
 ### Pillar 1: Component Reusability & UI Architecture
-- [ ] **Component Inventory Audit**: Checked `src/Components/` before adding any new UI markup.
+- [ ] **Component Inventory Audit**: Checked `src/Components/` and `src/Components/ui/` before adding any new UI markup.
 - [ ] **Mandatory Component Usage**: Reused existing generic UI components:
-  - `<Button />` (`src/Components/Button.js`) for action buttons.
+  - `<Button />` (`src/Components/Button.js`) or Shadcn `<Button />` (`src/Components/ui/button.js`) for action buttons.
   - `<Spinner />` (`src/Components/Spinner.js`) for loading states.
   - `<Customtoast />` (`src/Components/Customtoast.js`) for toast notifications.
   - `<Navbar1 />` (`src/Components/Navbar/Navbar1.js`) for headers.
   - `<ProductModal />` (`src/Components/ProductComponents/ProductModal.js`) for product popups.
   - `<ProductNav />` (`src/Components/ProductComponents/ProductNav.js`) for sub-navigation.
   - `<BarChart />` / `<NewChart />` (`src/Components/Chart/`) for analytics charts.
-- [ ] **Pure Component Pattern**: Placed new shared UI components inside `src/Components/` as pure functional components driven strictly by props (no raw inline API calls or hardcoded state).
+  - Shadcn UI primitives (`Card`, `Table`, `DropdownMenu`, `Button`) in `src/Components/ui/`.
+- [ ] **Pure Component Pattern**: Placed new shared UI components inside `src/Components/` or `src/Components/ui/` as pure functional components driven strictly by props (no raw inline API calls or hardcoded state).
 
 ### Pillar 2: ApiService Centralization & HTTP Layer
 - [ ] **Forbidden Direct Imports**: No direct `import axios from 'axios'` in pages (`src/Pages/`) or components (`src/Components/` or `src/Api/`).
@@ -40,7 +41,7 @@ This skill provides a systematic playbook and audit checklist for reviewing rece
 - [ ] **Field Helper Usage**: Form inputs use `{...formik.getFieldProps('fieldName')}` to eliminate boilerplate code.
 
 ### Pillar 4: Script Synchronization & Build Health
-- [ ] **Skill Parity**: `./scripts/sync-skills.sh` has been executed to synchronize `.antigravity/skills/` and `.cursor/skills/` and refresh the `.agent/skills` symlink.
+- [ ] **Skill Parity**: `./scripts/sync-skills.sh` has been executed to synchronize `.antigravity/skills/`, `.cursor/skills/`, and `.claude/skills/` and refresh the `.agent/skills` symlink.
 - [ ] **Build Integrity**: Project builds successfully without syntax or module resolution errors (`npm run build`).
 - [ ] **Zero ESLint Warnings**: Build produces zero compiler/ESLint warnings (`no-unused-vars`, `react-hooks/exhaustive-deps`, `eqeqeq`).
 - [ ] **Test Integrity**: Test suite passes without execution or import errors (`CI=true npm test`).

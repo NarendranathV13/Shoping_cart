@@ -1,7 +1,42 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { useSelector} from 'react-redux';
-import '../Navbar/style.css'
+import { useSelector } from 'react-redux';
+import '../Navbar/style.css';
+
+const navItems = [
+    {
+        id: 'dashboard',
+        title: 'Dashboard',
+        path: '/',
+        icon: 'fa fa-tachometer-alt',
+        showInTop: false,
+        showBadge: false,
+    },
+    {
+        id: 'products',
+        title: 'Products',
+        path: '/Products',
+        icon: 'fa-solid fa-store',
+        showInTop: true,
+        showBadge: false,
+    },
+    {
+        id: 'cart',
+        title: 'Cart',
+        path: '/Cart',
+        icon: 'fa-solid fa-cart-shopping',
+        showInTop: true,
+        showBadge: true,
+    },
+    {
+        id: 'orders',
+        title: 'My Orders',
+        path: '/Myorders',
+        icon: 'fa-solid fa-gift',
+        showInTop: true,
+        showBadge: false,
+    },
+];
 
 const Navbar1 = ({ auth }) => {
     const cartCount = useSelector((state) => state.cart.cartCount);
@@ -20,23 +55,21 @@ const Navbar1 = ({ auth }) => {
             {/* Top Navbar */}
             <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex justify-between shadow-sm">
                 <div className="flex items-center space-x-6">
-                    <NavLink to="/Products" className="text-gray-700 hover:text-indigo-600 font-medium flex items-center transition-colors">
-                        <i className="fa-solid fa-store mr-2"></i>Products
-                    </NavLink>
-                    
-                    <NavLink to="/Cart" className="text-gray-700 hover:text-indigo-600 font-medium flex items-center relative transition-colors">
-                        <i className="fa-solid fa-cart-shopping mr-2 text-xl"></i>
-                        {cartCount > 0 && (
-                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">
-                                {cartCount}
-                            </span>
-                        )}
-                        Cart
-                    </NavLink>
-
-                    <NavLink to="/Myorders" className="text-gray-700 hover:text-indigo-600 font-medium flex items-center transition-colors">
-                        <i className="fa-solid fa-gift mr-2"></i>My Orders
-                    </NavLink>
+                    {navItems.filter((item) => item.showInTop).map((item) => (
+                        <NavLink
+                            key={item.id}
+                            to={item.path}
+                            className="text-gray-700 hover:text-indigo-600 font-medium flex items-center relative transition-colors"
+                        >
+                            <i className={`${item.icon} mr-2 ${item.showBadge ? 'text-xl' : ''}`}></i>
+                            {item.showBadge && cartCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">
+                                    {cartCount}
+                                </span>
+                            )}
+                            {item.title}
+                        </NavLink>
+                    ))}
                 </div>
 
                 <div className="flex items-center space-x-4">
@@ -70,30 +103,32 @@ const Navbar1 = ({ auth }) => {
                 </div>
 
                 <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
-                    <NavLink to="/" className={({isActive}) => `flex items-center px-4 py-3 rounded-lg font-medium transition-all ${isActive ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}>
-                        <i className="fa fa-tachometer-alt w-6"></i>Dashboard
-                    </NavLink>
-                    
-                    <NavLink to="/Products" className={({isActive}) => `flex items-center px-4 py-3 rounded-lg font-medium transition-all ${isActive ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}>
-                        <i className="fa-solid fa-store w-6"></i>Products
-                    </NavLink>
-                    
-                    <NavLink to="/Cart" className={({isActive}) => `flex items-center px-4 py-3 rounded-lg font-medium transition-all ${isActive ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}>
-                        <i className="fa-solid fa-cart-shopping w-6"></i>Cart
-                        {cartCount > 0 && (
-                            <span className="ml-auto bg-indigo-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                                {cartCount}
-                            </span>
-                        )}
-                    </NavLink>
-                    
-                    <NavLink to="/Myorders" className={({isActive}) => `flex items-center px-4 py-3 rounded-lg font-medium transition-all ${isActive ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}>
-                        <i className="fa-solid fa-gift w-6"></i>My Orders
-                    </NavLink>
+                    {navItems.map((item) => (
+                        <NavLink
+                            key={item.id}
+                            to={item.path}
+                            className={({ isActive }) =>
+                                `flex items-center px-4 py-3 rounded-lg font-medium transition-all ${
+                                    isActive
+                                        ? 'bg-indigo-600 text-white shadow-md'
+                                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                                }`
+                            }
+                        >
+                            <i className={`${item.icon} w-6`}></i>
+                            {item.title}
+                            {item.showBadge && cartCount > 0 && (
+                                <span className="ml-auto bg-indigo-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </NavLink>
+                    ))}
                 </nav>
             </aside>
             
         </>
-    )
-}
+    );
+};
+
 export default Navbar1;

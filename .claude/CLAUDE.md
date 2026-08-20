@@ -13,6 +13,7 @@ This document defines the strict operational rules, layer constraints, and code 
 - **Routing**: React Router v6 (`src/Router/`).
 - **Forms & Validation**: Formik + Yup schema validation.
 - **Styling**: Bootstrap 5 + Styled-Components (`src/StyledComponent/`).
+- **Styling**: Bootstrap 5 + TailwindCSS + Styled-Components + Shadcn UI (`src/Components/ui/`).
 - **User Notifications**: SweetAlert2 (`Swal.fire`) for dialogs; `<Customtoast />` for toast messages.
 
 ### What to Avoid
@@ -36,7 +37,9 @@ src/
 │   ├── Spinner.js              # Standard loading spinner indicator
 │   ├── Chart/                  # Analytics chart components (BarChart.js, NewChart.js)
 │   ├── Navbar/                 # Navigation header components (Navbar1.js, style.css)
-│   └── ProductComponents/      # Feature components (ProductModal.js, ProductNav.js)
+│   ├── ProductComponents/      # Feature components (ProductModal.js, ProductNav.js)
+│   └── ui/                     # Shadcn UI primitives (card.js, table.js, dropdown-menu.js, button.js)
+├── lib/                        # Utility helpers (`utils.js` for cn class merging)
 ├── Pages/                      # Top-level routed page views
 ├── Redux/                      # Redux slices & store (`cartSlice.js`, `Store.js`)
 ├── Router/                     # React Router v6 route definitions
@@ -72,17 +75,20 @@ src/
 
 ## 4. Mandatory Component Reuse Rule
 
-Before writing any new UI element or markup, developers and AI assistants **MUST** inspect `src/Components/` and reuse existing components:
+Before writing any new UI element or markup, developers and AI assistants **MUST** inspect `src/Components/` and `src/Components/ui/` and reuse existing components:
 
 | Element Required | Existing Component | Mandatory File Path |
 | :--- | :--- | :--- |
-| Action Button | `<Button />` | `src/Components/Button.js` |
+| Action Button | `<Button />` | `src/Components/Button.js` / `src/Components/ui/button.js` |
 | Loading Indicator | `<Spinner />` | `src/Components/Spinner.js` |
 | Toast Alert | `<Customtoast />` | `src/Components/Customtoast.js` |
 | Header Navigation | `<Navbar1 />` | `src/Components/Navbar/Navbar1.js` |
 | Product Details Modal | `<ProductModal />` | `src/Components/ProductComponents/ProductModal.js` |
 | Category Header Nav | `<ProductNav />` | `src/Components/ProductComponents/ProductNav.js` |
 | Sales/Analytics Charts | `<BarChart />` / `<NewChart />` | `src/Components/Chart/` |
+| Card Container | `<Card />` | `src/Components/ui/card.js` |
+| Data Table | `<Table />` | `src/Components/ui/table.js` |
+| Action Dropdown Menu | `<DropdownMenu />` | `src/Components/ui/dropdown-menu.js` |
 
 ---
 

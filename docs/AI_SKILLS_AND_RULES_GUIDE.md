@@ -53,10 +53,10 @@ Shopping_cart/
 
 | Skill Guide File | Primary Purpose | Code Examples Provided |
 | :--- | :--- | :--- |
-| **`component-reusability-guide.md`** | UI layout, component inventory, reusability rules | Page view composing `<Navbar1 />`, `<Spinner />`, `<Button />`, `<Customtoast />`; building pure components without JSDoc blocks. |
+| **`component-reusability-guide.md`** | UI layout, common & Shadcn UI component inventory, reusability rules | Page view composing `<Navbar1 />`, `<Spinner />`, `<Customtoast />`, Shadcn `<Card />` & `<Button />`; building pure components. |
 | **`api-service-guide.md`** | Centralized Axios requests (`src/ApiService/`) | `api.get()` with loading indicator, `api.post()` with SweetAlert2 notifications (`Swal.fire`). |
 | **`redux-formik-guide.md`** | State management & form validation | `cartSlice.js` with `createSlice`; `useFormik` registration form with Yup schema validation. |
-| **`skill-compliance-review.md`** | Skill compliance audit & commit review | Audit checklist for component reusability, ApiService centralization, Redux/Formik state, and build/test health. |
+| **`skill-compliance-review.md`** | Skill compliance audit & commit review | Audit checklist for component reusability, Shadcn UI standards, ApiService centralization, Redux/Formik state, and build/test health. |
 
 ---
 

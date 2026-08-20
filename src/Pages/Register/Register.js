@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../Components/Button';
 import InputField from '../../Components/InputField';
+import DropdownField from '../../Components/DropdownField';
 
 const validationSchema = Yup.object().shape({
     username: Yup.string().required('Name is required'),
@@ -122,14 +123,13 @@ const Register = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
                         <InputField label="Pin Code" id="pin" formik={formik} placeholder="Enter your pincode" />
                         
-                        <div className="mb-4 w-full">
-                            <InputField label="Language" id="language" formik={formik} placeholder="Select a language" list="languages" />
-                            <datalist id="languages">
-                                {languageOptions.map((option, index) => (
-                                    <option key={index} value={option} />
-                                ))}
-                            </datalist>
-                        </div>
+                        <DropdownField
+                            label="Language"
+                            id="language"
+                            formik={formik}
+                            options={languageOptions}
+                            placeholder="Select a language"
+                        />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-2 pb-6 border-b border-gray-100">
