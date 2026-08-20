@@ -54,28 +54,35 @@ export default cartSlice.reducer;
 
 ---
 
-## 2. Formik & Yup Form Handling (`src/Pages/Register/Register.js`)
+## 2. Formik & Yup Form Handling (`src/Pages/Register/Register.js` & `RegisterSchema.js`)
 
+### Schema File (`src/Pages/Register/RegisterSchema.js`)
+```javascript
+// src/Pages/Register/RegisterSchema.js
+import * as Yup from 'yup';
+
+export const registerValidationSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+});
+```
+
+### Component File (`src/Pages/Register/Register.js`)
 ```javascript
 // src/Pages/Register/Register.js
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import api from '../../ApiService';
 import Spinner from '../../Components/Spinner';
-
-const RegisterSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email address').required('Email is required'),
-    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
-});
+import { registerValidationSchema } from './RegisterSchema';
 
 const RegisterPage = () => {
     const [loading, setLoading] = useState(false);
 
     const formik = useFormik({
         initialValues: { email: '', password: '' },
-        validationSchema: RegisterSchema,
+        validationSchema: registerValidationSchema,
         onSubmit: async (values) => {
             setLoading(true);
             try {
@@ -140,7 +147,7 @@ export default RegisterPage;
 - Distinguish between single-item operations (e.g. "Buy Now") and cart batch operations (e.g. "Cart Checkout").
 - Dispatch state changes atomically in single action calls instead of looping dispatches in `.forEach()`.
 - Leverage `{...formik.getFieldProps('fieldName')}` to reduce form input boilerplate (`value`, `onChange`, `onBlur`).
-- Define Yup validation schemas outside component render functions.
+- **Mandatory Schema Separation**: MUST define Yup validation schemas in a separate file (e.g. `RegisterSchema.js`, `CheckoutSchema.js`, or `schema.js`) in their respective folder and import them into component files.
 - Route all form submission API requests through `ApiService` (`api.post(...)`).
 
 ### What to Avoid

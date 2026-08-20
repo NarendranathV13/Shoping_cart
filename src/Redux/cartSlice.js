@@ -24,24 +24,33 @@ export const cartSlice = createSlice({
       state.cartCount -= 1; // reduce cart count
       localStorage.setItem('cart', JSON.stringify(state.cartItems)); // Update local storage
     },
-    // Place order from cart directly
+    // Place order with option to clear cart if it was a cart checkout
     addOrder: (state, action) => {
       const payload = action.payload;
       let newOrders = [];
+      let isCartCheckout = false;
 
       if (payload && typeof payload === 'object') {
-        if (Array.isArray(payload)) {
+        if (payload.items && Array.isArray(payload.items)) {
+          newOrders = payload.items;
+          isCartCheckout = payload.isCartCheckout !== false;
+        } else if (Array.isArray(payload)) {
           newOrders = payload;
+          isCartCheckout = true;
         } else {
           newOrders = [payload];
+          isCartCheckout = payload.isCartCheckout === true;
         }
       }
 
       state.orders.push(...newOrders);
-      // Clear cart after placing order
-      state.cartItems = [];
-      state.cartCount = 0;
-      localStorage.removeItem('cart');
+      
+      // Clear cart only if this was an explicit cart checkout
+      if (isCartCheckout) {
+        state.cartItems = [];
+        state.cartCount = 0;
+        localStorage.removeItem('cart');
+      }
       
       localStorage.setItem('orders', JSON.stringify(state.orders));
     },

@@ -153,7 +153,7 @@ For standardized team prompts (creating features, running skill reviews & audit 
 
 ## 9. Response & Commit Formatting Rule
 
-After completing any task/prompt response, the AI assistant **MUST** provide:
+After completing any task/prompt response, the AI assistant **MUST** review all changes made to files in the workspace and based on those changes provide:
 1. **Branch Name**: Formatted using conventional prefixes (e.g., `feat/feature-name`, `fix/fix-name`, `chore/task-name`, `refactor/component-name`).
 2. **Commit Message**: A single-line simple conventional commit message using prefixes (`feat:`, `fix:`, `chore:`, `refactor:`, `wip:`).
 

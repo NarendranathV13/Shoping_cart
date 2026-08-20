@@ -40,9 +40,11 @@ const Cart = () => {
     
     const handlePlaceOrder = () => {
         if (cartItems.length > 0) {
-            dispatch(addOrder(cartItems));
-            navigate('/Myorders');
+            dispatch(addOrder({ items: cartItems, isCartCheckout: true }));
             handleShowToast(true, 'success', 'Order placed successfully!');
+            setTimeout(() => {
+                navigate('/Myorders');
+            }, 1000);
         }
     };
 

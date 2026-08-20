@@ -1,20 +1,10 @@
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { Link, useNavigate } from 'react-router-dom';
-import * as Yup from "yup";
 import Swal from 'sweetalert2'; 
 import Button from "../../Components/Button";
 import InputField from "../../Components/InputField";
-
-const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string()
-        .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-            'Password must have minimum 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character'
-        )
-        .required('Password is required'),
-});
+import { loginValidationSchema } from "./LoginSchema";
 
 const Login = ({ auth }) => {
     const isAuth = localStorage.getItem("isAuth");
@@ -25,7 +15,7 @@ const Login = ({ auth }) => {
             email: "",
             password: "",
         },
-        validationSchema: validationSchema,
+        validationSchema: loginValidationSchema,
         onSubmit: (values) => {
             const savedData = JSON.parse(localStorage.getItem("formData"));
             if (savedData && savedData.email === values.email && savedData.password === values.password) {

@@ -68,7 +68,9 @@ const ProductDetails = () => {
             const productWithQty = { ...product, quantity };
             dispatch(addBuyNow(productWithQty));
             handleShowToast(true, 'success', 'Order placed successfully!');
-            setTimeout(() => navigate('/Myorders'), 500);
+            setTimeout(() => {
+                navigate('/Myorders');
+            }, 1000);
         }
     };
 
