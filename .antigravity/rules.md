@@ -149,4 +149,19 @@ For standardized team prompts (creating features, running skill reviews & audit 
 - **Components**: Do not use `camelCase` or `kebab-case` for component names (e.g., `productModal.js`, `product-modal.js`).
 - **Folders**: Avoid creating deeply nested folder structures. Do not use `lowercase` or `kebab-case` for React component directories.
 
+---
+
+## 9. Response & Commit Formatting Rule
+
+After completing any task/prompt response, the AI assistant **MUST** provide:
+1. **Branch Name**: Formatted using conventional prefixes (e.g., `feat/feature-name`, `fix/fix-name`, `chore/task-name`, `refactor/component-name`).
+2. **Commit Message**: A single-line simple conventional commit message using prefixes (`feat:`, `fix:`, `chore:`, `refactor:`, `wip:`).
+
+**Format Pattern**:
+`Branch: <type>/<feature-name> | <type>: <description>`
+
+**Example**:
+`Branch: feat/product-details-page | feat: implemented product details page`
+
+
 

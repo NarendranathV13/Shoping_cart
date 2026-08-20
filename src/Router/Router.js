@@ -6,6 +6,7 @@ import Navbar1 from "../Components/Navbar/Navbar1";
 import ProtectedRouter from "./Protectedrouter";
 import Dashboard from "../Pages/Dashboard";
 import Products from "../Pages/Products/Products";
+import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import Myorders from "../Pages/Myorders";
 import Cart from "../Pages/Cart/Cart";
 
@@ -24,6 +25,7 @@ const Router = ({auth}) =>{
                 <Route path="/" element={<ProtectedRouter auth={localStorage.getItem("isAuth")} />}>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/Products" element={<Products />} />
+                    <Route path="/Products/:id" element={<ProductDetails />} />
                     <Route path="/Myorders" element={<Myorders />} />
                     <Route path="/Cart" element={<Cart />} />
                 </Route>

@@ -44,7 +44,7 @@ This skill provides a systematic playbook and audit checklist for reviewing rece
 - [ ] **Skill Parity**: `./scripts/sync-skills.sh` has been executed to synchronize `.antigravity/skills/`, `.cursor/skills/`, and `.claude/skills/` and refresh the `.agent/skills` symlink.
 - [ ] **Build Integrity**: Project builds successfully without syntax or module resolution errors (`npm run build`).
 - [ ] **Zero ESLint Warnings**: Build produces zero compiler/ESLint warnings (`no-unused-vars`, `react-hooks/exhaustive-deps`, `eqeqeq`).
-- [ ] **Test Integrity**: Test suite passes without execution or import errors (`CI=true npm test`).
+- [ ] **Commit & Branch Output**: Response provides a branch name formatted as `feat/feature-name` and a single-line conventional commit message (e.g., `Branch: feat/product-details-page | feat: implemented product details page`).
 
 
 ---
