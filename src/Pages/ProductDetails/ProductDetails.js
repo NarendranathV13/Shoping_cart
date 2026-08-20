@@ -8,6 +8,7 @@ import Button from '../../Components/Button';
 import Customtoast from '../../Components/Customtoast';
 import { Card, CardContent } from '../../Components/ui/card';
 import Swal from 'sweetalert2';
+import { DEFAULT_PRODUCT_IMAGE } from '../../Assets/productImages';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -118,6 +119,7 @@ const ProductDetails = () => {
                                 src={product.image_url}
                                 alt={product.product_name}
                                 className="max-h-[420px] w-full object-contain rounded-xl transition-transform duration-300 hover:scale-105"
+                                onError={(e) => { e.target.src = DEFAULT_PRODUCT_IMAGE; }}
                             />
                         </div>
 

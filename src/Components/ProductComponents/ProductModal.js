@@ -1,4 +1,5 @@
 import React from 'react';
+import { DEFAULT_PRODUCT_IMAGE } from '../../Assets/productImages';
 
 const ProductModal = ({ selectedProduct, showModal }) => {
     return (
@@ -15,7 +16,12 @@ const ProductModal = ({ selectedProduct, showModal }) => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-lg-6 mt-2">
-                                            <img src={selectedProduct.image_url} className="img-fluid mb-3 rounded-5 " alt="Product" />
+                                            <img 
+                                                src={selectedProduct.image_url} 
+                                                className="img-fluid mb-3 rounded-5 " 
+                                                alt={selectedProduct.product_name || "Product"} 
+                                                onError={(e) => { e.target.src = DEFAULT_PRODUCT_IMAGE; }}
+                                            />
                                         </div>
                                         <div className="col-lg-6 mt-5">
                                             <p><strong>Price: </strong> {selectedProduct.product_price_inr}</p>

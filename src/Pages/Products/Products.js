@@ -9,6 +9,7 @@ import Spinner from "../../Components/Spinner";
 import Button from "../../Components/Button";
 import Customtoast from "../../Components/Customtoast.js";
 import Swal from "sweetalert2";
+import { DEFAULT_PRODUCT_IMAGE } from "../../Assets/productImages";
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -92,7 +93,12 @@ const Products = () => {
                             className="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transform transition-all duration-300 hover:-translate-y-1 overflow-hidden flex flex-col h-full"
                         >
                             <div className="h-48 overflow-hidden cursor-pointer" onClick={() => handleProductClick(product)}>
-                                <img src={product.image_url} alt={product.product_name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                                <img 
+                                    src={product.image_url} 
+                                    alt={product.product_name} 
+                                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
+                                    onError={(e) => { e.target.src = DEFAULT_PRODUCT_IMAGE; }}
+                                />
                             </div>
                             
                             <div className="p-5 flex-1 flex flex-col">
